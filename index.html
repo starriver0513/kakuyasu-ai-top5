@@ -1,0 +1,1346 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>格安AI TOP5の始め方と料金｜保存版資料</title>
+<meta name="description" content="Grok・GLM・DeepSeek・Kimi・Qwenの5つの格安AIについて、始め方、料金の早見表、Claude CodeやCodexにつなぐ手順、入れてはいけない情報のチェックリストをまとめた資料です。">
+<meta property="og:title" content="格安AI TOP5の始め方と料金｜保存版資料">
+<meta property="og:description" content="Grok・GLM・DeepSeek・Kimi・Qwenの5つの格安AIについて、始め方、料金の早見表、Claude CodeやCodexにつなぐ手順、入れてはいけない情報のチェックリストをまとめた資料です。">
+<meta name="theme-color" content="#0b2a5b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=M+PLUS+1:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   保存版資料テンプレート v2 — 青ベース / 動きあり / GitHub Pages配布用
+   使い方: 各コンポーネントは <!-- [C:名前] --> で始まる。
+           使わないブロックはコメントごと削除してよい。
+   ============================================================ */
+
+:root{
+  /* --- 色（青ベース。紫・ピンクは使わない） --- */
+  --ink:#0a1020;          /* 本文 */
+  --ink-soft:#22304a;     /* 見出し補助 */
+  --muted:#5c6880;        /* 補足文 */
+  --navy:#0b2a5b;         /* 濃紺 */
+  --blue:#0866ff;         /* 主役の青 */
+  --blue-dark:#073b9a;
+  --cyan:#28d3ff;         /* 差し色 */
+  --sky:#d9eaff;
+  --blue-soft:#eef5ff;
+  --line:#d8e4f6;
+  --bg:#f6f9ff;
+  --white:#fff;
+  --code-bg:#0b1834;      /* プロンプト枠 */
+  --ok:#0f9d58;
+  --warn:#f59e0b;
+  --grad-hero:linear-gradient(135deg,#040c22 0%,#062a68 48%,#0a63d6 100%);
+  --grad-accent:linear-gradient(135deg,var(--cyan) 0%,var(--blue) 100%);
+  --shadow:0 18px 44px rgba(8,32,80,.12);
+  --shadow-hover:0 26px 64px rgba(8,32,80,.22);
+  --radius:18px;
+  --radius-sm:12px;
+  --max:1040px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden;scroll-padding-top:24px}
+body{
+  margin:0;color:var(--ink);background:var(--bg);
+  font-family:'Noto Sans JP',-apple-system,BlinkMacSystemFont,'Hiragino Sans',Meiryo,sans-serif;
+  line-height:1.95;font-size:16px;overflow-x:hidden;
+  background-image:
+    radial-gradient(circle at 12% -4%,rgba(8,102,255,.10),transparent 34%),
+    radial-gradient(circle at 92% 6%,rgba(40,211,255,.10),transparent 30%);
+  background-attachment:fixed;
+}
+a{color:var(--blue);font-weight:700;text-underline-offset:3px;text-decoration-thickness:2px}
+img{max-width:100%;height:auto;display:block}
+
+/* [C:進捗バー] ページ上端のスクロール進捗 */
+.progress{position:fixed;inset:0 0 auto 0;height:4px;z-index:60;background:transparent}
+.progress span{display:block;height:100%;width:0;background:var(--grad-accent);box-shadow:0 0 14px rgba(8,102,255,.6);transition:width .1s linear}
+
+.page{width:min(var(--max),calc(100vw - 32px));margin:0 auto;padding:28px 0 96px}
+
+/* ============ [C:ヒーロー] ============ */
+.hero{position:relative;overflow:hidden;border-radius:26px;color:#fff;padding:clamp(30px,5vw,64px);background:var(--grad-hero);box-shadow:var(--shadow-hover)}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(135deg,rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(45deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:74px 74px;opacity:.6}
+.hero::after{content:"";position:absolute;width:280px;height:280px;right:-90px;top:-110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(40,211,255,.35),transparent 70%);animation:float 7s ease-in-out infinite;pointer-events:none}
+.hero-inner{position:relative;z-index:1}
+.hero-glow{position:absolute;inset:-40%;z-index:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(120,190,255,.30),transparent 60%);transition:opacity .4s ease}
+@keyframes float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-14px,0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  font-size:12px;font-weight:800;letter-spacing:.1em}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:blink 1.8s ease-in-out infinite}
+.hero h1{margin:18px 0 14px;font-family:'M PLUS 1',sans-serif;font-size:clamp(27px,5.4vw,52px);line-height:1.28;font-weight:800;letter-spacing:-.01em}
+.hero h1 .grad{background:linear-gradient(135deg,#8fd6ff,#fff 60%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .lead{margin:0;font-size:clamp(14px,2.2vw,17px);opacity:.94;max-width:44em}
+.hero-meta{margin-top:16px;font-size:13px;opacity:.8}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.hero-figure{margin-top:28px;border-radius:18px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 16px 40px rgba(0,0,0,.42)}
+.hero-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.hero-stat{flex:1 1 150px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16)}
+.hero-stat b{display:block;font-family:'M PLUS 1',sans-serif;font-size:clamp(20px,3.4vw,28px);line-height:1.3}
+.hero-stat span{font-size:12px;opacity:.82}
+
+/* ============ [C:ボタン] ============ */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:13px 24px;
+  overflow:hidden;border-radius:14px;background:var(--grad-accent);color:#fff!important;font-weight:900;text-decoration:none;
+  box-shadow:0 12px 30px rgba(8,102,255,.34);transition:transform .26s ease,box-shadow .26s ease}
+.btn::before{content:"";position:absolute;inset:0;transform:translateX(-130%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);transition:transform .6s ease}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(8,102,255,.46)}
+.btn:hover::before{transform:translateX(130%)}
+.btn.ghost{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.4);box-shadow:none}
+.btn.solid{background:var(--navy);box-shadow:0 12px 30px rgba(11,42,91,.28)}
+.btn.small{min-height:40px;padding:9px 16px;font-size:13px;border-radius:11px;box-shadow:var(--shadow)}
+/* [C:ツールリンク] 本文中に置く小さめリンクボタン。章末に集約せず、話題が出た章の中に置く */
+.toollink{display:inline-flex;align-items:center;gap:7px;margin:4px 8px 4px 0;padding:8px 14px;border-radius:999px;
+  background:var(--white);border:1px solid var(--line);color:var(--blue)!important;font-size:13.5px;font-weight:800;
+  text-decoration:none;box-shadow:0 6px 16px rgba(8,32,80,.07);transition:transform .2s ease,border-color .2s ease}
+.toollink:hover{transform:translateY(-2px);border-color:var(--blue)}
+.toollink::after{content:"↗";font-size:11px;opacity:.7}
+
+/* ============ [C:目次] ============ */
+.toc{margin:30px 0 0;padding:24px 26px;border-radius:var(--radius);background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow)}
+.toc h2{margin:0 0 14px;font-family:'M PLUS 1',sans-serif;font-size:17px;color:var(--navy)}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.toc li{counter-increment:toc}
+.toc a{display:flex;gap:10px;align-items:baseline;padding:8px 10px;border-radius:10px;color:var(--ink-soft)!important;
+  font-weight:700;font-size:14.5px;text-decoration:none;transition:background .2s ease,color .2s ease}
+.toc a::before{content:counter(toc,decimal-leading-zero);color:var(--blue);font-family:'M PLUS 1',sans-serif;font-size:13px}
+.toc a:hover,.toc a.active{background:var(--blue-soft);color:var(--navy)!important}
+
+/* [C:サイド進捗ナビ] PCのみ。現在地を点で示す */
+.sidenav{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:40;display:none;flex-direction:column;gap:11px}
+.sidenav a{position:relative;width:11px;height:11px;border-radius:50%;background:var(--line);transition:background .25s ease,transform .25s ease}
+.sidenav a.active{background:var(--blue);transform:scale(1.45)}
+.sidenav a span{position:absolute;right:20px;top:50%;transform:translateY(-50%) translateX(6px);white-space:nowrap;
+  padding:5px 10px;border-radius:8px;background:var(--navy);color:#fff;font-size:11.5px;font-weight:700;
+  opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+.sidenav a:hover span{opacity:1;transform:translateY(-50%) translateX(0)}
+@media (min-width:1240px){.sidenav{display:flex}}
+
+/* ============ [C:セクション見出し] ============ */
+.sec{margin-top:56px}
+.sec-label{margin:0;text-align:center;font-family:'M PLUS 1',sans-serif;font-size:12.5px;letter-spacing:.16em;color:var(--blue);font-weight:800}
+.sec-title{margin:6px 0 6px;text-align:center;font-family:'M PLUS 1',sans-serif;font-size:clamp(21px,4.4vw,31px);line-height:1.42;color:var(--navy);font-weight:800}
+.sec-lead{margin:0 auto;max-width:36em;text-align:center;font-size:14.5px;color:var(--muted)}
+
+/* ============ [C:本文カード] ============ */
+.card{margin-top:22px;padding:clamp(20px,3.4vw,32px);border-radius:var(--radius);background:var(--white);
+  border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .3s ease,box-shadow .3s ease}
+.card:hover{box-shadow:var(--shadow-hover)}
+.card h3{margin:26px 0 10px;font-family:'M PLUS 1',sans-serif;font-size:clamp(17px,2.8vw,21px);color:var(--navy);line-height:1.5}
+.card h3:first-child{margin-top:0}
+.card p{margin:0 0 12px}
+.card p:last-child{margin-bottom:0}
+.hl{background:linear-gradient(transparent 62%,rgba(8,102,255,.22) 62%);font-weight:800}
+
+/* [C:3Dホバーカード] グリッド内の小カードだけ軽く反応させる */
+.tilt{transform-style:preserve-3d;transition:transform .3s ease}
+
+/* ============ [C:手順ステップ] 番号つき縦並び ============ */
+.step{display:flex;gap:16px;padding:20px 0;border-top:1px dashed var(--line)}
+.step:first-of-type{border-top:0;padding-top:4px}
+.step-no{flex:0 0 42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:12px;
+  background:var(--grad-accent);color:#fff;font-family:'M PLUS 1',sans-serif;font-weight:800;font-size:17px;
+  box-shadow:0 8px 20px rgba(8,102,255,.28)}
+.step-body{flex:1;min-width:0}
+.step-body h4{margin:6px 0 8px;font-family:'M PLUS 1',sans-serif;font-size:16.5px;color:var(--navy);line-height:1.55}
+.step-body p{margin:0 0 10px;font-size:15px}
+
+/* ============ [C:グリッドカード] 3つ並べる用 ============ */
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:6px}
+.grid-item{padding:20px;border-radius:var(--radius-sm);background:var(--blue-soft);border:1px solid var(--line)}
+.grid-item .tag{display:inline-block;margin-bottom:8px;padding:3px 11px;border-radius:999px;background:var(--navy);color:#fff;font-size:11.5px;font-weight:800}
+.grid-item h4{margin:0 0 7px;font-family:'M PLUS 1',sans-serif;font-size:16px;color:var(--navy);line-height:1.5}
+.grid-item p{margin:0;font-size:14px;color:var(--ink-soft)}
+
+/* ============ [C:要点リスト] ============ */
+.takeaway{margin:0;padding:0;list-style:none;counter-reset:tk}
+.takeaway li{counter-increment:tk;position:relative;padding:14px 0 14px 46px;border-bottom:1px dashed var(--line)}
+.takeaway li:last-child{border-bottom:0}
+.takeaway li::before{content:counter(tk);position:absolute;left:0;top:14px;width:30px;height:30px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;background:var(--navy);color:#fff;font-size:14px;font-weight:800}
+.takeaway b{display:block;color:var(--navy);font-size:16px;line-height:1.6}
+.takeaway span{display:block;margin-top:5px;font-size:14.5px;color:var(--ink-soft)}
+
+/* [C:チェックリスト] */
+.check{margin:0;padding:0;list-style:none}
+.check li{position:relative;padding:9px 0 9px 32px;font-size:15px}
+.check li::before{content:"";position:absolute;left:4px;top:17px;width:14px;height:8px;border-left:3px solid var(--blue);border-bottom:3px solid var(--blue);transform:rotate(-45deg)}
+
+/* ============ [C:プロンプト枠] コピーボタン付き ============ */
+.prompt{position:relative;margin:18px 0;border-radius:var(--radius-sm);background:var(--code-bg);
+  box-shadow:0 16px 38px rgba(4,20,54,.32);overflow:hidden}
+.prompt-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;
+  background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.09)}
+.prompt-head b{color:#cfe4ff;font-size:12.5px;font-weight:800;letter-spacing:.04em}
+.copy{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:0;border-radius:9px;cursor:pointer;
+  background:var(--blue);color:#fff;font-size:12px;font-weight:800;font-family:inherit;transition:background .2s ease,transform .2s ease}
+.copy:hover{transform:translateY(-1px)}
+.copy.done{background:var(--ok)}
+.prompt pre{margin:0;padding:18px 18px 20px;overflow-x:auto;color:#e6f0ff;font-size:13.5px;line-height:1.85;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Noto Sans JP',monospace;white-space:pre-wrap;word-break:break-word}
+
+/* ============ [C:画像] 生成画像・スクショを本文に挟む ============ */
+.figure{margin:22px 0;border-radius:var(--radius-sm);overflow:hidden;background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow)}
+.figure img{width:100%}
+.figure figcaption{padding:12px 16px;font-size:13px;color:var(--muted);background:var(--blue-soft);border-top:1px solid var(--line)}
+
+/* ============ [C:動画] 16:9で埋め込む ============ */
+.video{margin:20px 0 0;border-radius:var(--radius-sm);overflow:hidden;background:#050d1f;aspect-ratio:16/9;box-shadow:var(--shadow)}
+.video iframe,.video video{width:100%;height:100%;border:0;display:block}
+.video-note{margin:12px 0 0;font-size:13.5px;color:var(--muted)}
+
+/* ============ [C:表] 横スクロール対応 ============ */
+.table-scroll{margin:18px 0;overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--white)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--navy);color:#fff;font-weight:800;white-space:nowrap}
+tbody tr:nth-child(even){background:var(--blue-soft)}
+tbody tr:last-child td{border-bottom:0}
+
+/* ============ [C:補足ボックス] ============ */
+.note{margin:16px 0;padding:14px 18px;border-radius:var(--radius-sm);background:var(--blue-soft);border-left:4px solid var(--blue);font-size:14px;color:var(--ink-soft)}
+.note.warn{background:#fff8ec;border-left-color:var(--warn)}
+.note b{color:var(--navy)}
+.example{margin:12px 0;padding:14px 18px;border-radius:var(--radius-sm);background:#f4f8ff;border:1px dashed var(--blue);font-size:14px}
+
+/* ============ [C:締めCTA] ============ */
+.closing{margin-top:64px;padding:clamp(30px,5vw,52px);border-radius:26px;color:#fff;text-align:center;
+  background:var(--grad-hero);box-shadow:var(--shadow-hover);position:relative;overflow:hidden}
+.closing::after{content:"";position:absolute;width:340px;height:340px;left:-120px;bottom:-160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(40,211,255,.28),transparent 70%);animation:float 8s ease-in-out infinite}
+.closing-inner{position:relative;z-index:1}
+.closing h2{margin:0 0 12px;font-family:'M PLUS 1',sans-serif;font-size:clamp(20px,4vw,30px);line-height:1.45}
+.closing p{margin:0 auto 10px;max-width:38em;font-size:15px;opacity:.94}
+.closing .btn{margin-top:20px}
+.bonus{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin:24px 0 4px;text-align:left}
+.bonus div{padding:14px 16px;border-radius:13px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
+.bonus b{display:block;font-family:'M PLUS 1',sans-serif;font-size:19px}
+.bonus span{font-size:12.5px;opacity:.85}
+
+.foot{margin-top:34px;text-align:center;font-size:12.5px;color:var(--muted)}
+
+/* [C:トップへ戻る] */
+.totop{position:fixed;right:20px;bottom:22px;z-index:50;width:48px;height:48px;border:0;border-radius:50%;cursor:pointer;
+  background:var(--navy);color:#fff;font-size:19px;box-shadow:var(--shadow);opacity:0;pointer-events:none;
+  transition:opacity .3s ease,transform .3s ease}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{transform:translateY(-3px)}
+
+/* ============ [C:出現アニメーション] ============ */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+@media (max-width:640px){
+  body{font-size:15.5px;line-height:1.9}
+  .step{gap:12px}
+  .step-no{flex-basis:36px;height:36px;font-size:15px}
+  .totop{right:14px;bottom:14px;width:44px;height:44px}
+}
+
+/* 動きが苦手な閲覧者には動きを止める */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+}
+/* インラインのコード（設定の名前・コマンド） */
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;background:var(--blue-soft);color:var(--navy);padding:1px 6px;border-radius:6px;word-break:break-all}
+td code{font-size:.85em}
+</style>
+</head>
+<body>
+
+<!-- [C:進捗バー] -->
+<div class="progress"><span id="bar"></span></div>
+
+<!-- [C:サイド進捗ナビ] -->
+<nav class="sidenav" id="sidenav" aria-label="セクション">
+  <a href="#s1"><span>料金の早見表</span></a>
+  <a href="#s2"><span>第5位 Grok</span></a>
+  <a href="#s3"><span>第4位 GLM</span></a>
+  <a href="#s4"><span>第3位 DeepSeek</span></a>
+  <a href="#s5"><span>第2位 Kimi</span></a>
+  <a href="#s6"><span>第1位 Qwen</span></a>
+  <a href="#s7"><span>入れてはいけない情報</span></a>
+  <a href="#s8"><span>Claude Codeにつなぐ</span></a>
+  <a href="#s9"><span>Codexにつなぐ</span></a>
+</nav>
+
+<div class="page">
+
+  <!-- ============ [C:ヒーロー] ============ -->
+  <header class="hero" id="hero">
+    <div class="hero-glow" id="glow"></div>
+    <div class="hero-inner">
+      <span class="badge"><span class="dot"></span>保存版資料｜格安AI 5つの始め方と料金</span>
+      <h1>1000円でClaude並の性能<br><span class="grad">格安AI TOP5の始め方と料金</span></h1>
+      <p class="lead">保存版資料のお受け取り、ありがとうございます。この資料では、内容のまとめと、実際に手を動かすための手順をまとめています。5つのAIの始め方、料金の早見表、Claude CodeやCodexにつなぐ手順、格安AIに入れてはいけない情報のチェックリストを、上から順に進めれば使い始められる形にしました。</p>
+
+      <div class="hero-stats">
+        <div class="hero-stat"><b>5つ</b><span>紹介する格安AI</span></div>
+        <div class="hero-stat"><b>0円〜</b><span>4つは無料で試せる</span></div>
+        <div class="hero-stat"><b>約190円</b><span>文章100万字あたりの最安（使った分だけ払う場合）</span></div>
+      </div>
+
+      <div class="hero-cta">
+        <a class="btn" href="#s1">資料を読みはじめる →</a>
+      </div>
+
+      <p class="hero-meta">※ 料金・画面は2026年10月11日に各社の公式ページで確認した内容です。料金は変わることがあるので、申し込む前に公式ページで確かめてください。このページはブックマークして、作業しながら見返してください。</p>
+    </div>
+  </header>
+
+  <!-- ============ [C:目次] ============ -->
+  <nav class="toc rv">
+    <h2>この資料の中身</h2>
+    <ol>
+      <li><a href="#s1">全体像：5つのAIの料金早見表と使い分け</a></li>
+      <li><a href="#s2">第5位 Grok：Xのアプリからすぐ使える</a></li>
+      <li><a href="#s3">第4位 GLM：時間がかかっても最後までやりきる</a></li>
+      <li><a href="#s4">第3位 DeepSeek：ほぼ0円で大量の作業を回す</a></li>
+      <li><a href="#s5">第2位 Kimi：調べものからスライド作りまで任せる</a></li>
+      <li><a href="#s6">第1位 Qwen：日本語の文章を安く書いてもらう</a></li>
+      <li><a href="#s7">格安AIに入れてはいけない情報のチェックリスト</a></li>
+      <li><a href="#s8">Claude Codeにつなぐ手順（4社分）</a></li>
+      <li><a href="#s9">Codexにつなぐ手順（4社分）</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============ STEP 01 ============ -->
+  <section class="sec" id="s1">
+    <p class="sec-label rv">STEP 01</p>
+    <h2 class="sec-title rv">全体像：5つのAIの料金早見表と使い分け</h2>
+    <p class="sec-lead rv">どのAIを、いくらで、どんな仕事に使えばいいかを1枚で確認します。</p>
+
+    <div class="card rv">
+      <h3>払い方は3通り</h3>
+      <p>格安AIの払い方は、だいたい次の3通りです。1つのAIで、3つとも用意されていることもあります。</p>
+      <div class="grid">
+        <div class="grid-item tilt"><span class="tag">0円</span><h4>無料で使える所</h4><p>サイトやアプリにログインして、チャットで話しかける使い方です。回数や使えるモデル（AIの頭脳にあたる部分の種類）に制限があります。</p></div>
+        <div class="grid-item tilt"><span class="tag">定額</span><h4>月額プラン</h4><p>毎月決まった額を払って、決まった量まで使えるプランです。使いすぎても請求が増えないので安心です。</p></div>
+        <div class="grid-item tilt"><span class="tag">従量</span><h4>使った分だけ払う（API）</h4><p>API（外部のサービスとやり取りするための、機械用の窓口）を通して使い、使った量だけ払う形です。Claude CodeやCodexにつなぐ時は、主にこの形か月額プランを使います。</p></div>
+      </div>
+
+      <h3>料金の早見表</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>AI</th><th>無料で使える所</th><th>月額プラン</th><th>使った分だけ（書いてもらう文章100万字あたり）</th></tr></thead>
+          <tbody>
+            <tr><td><b>第5位 Grok</b></td><td>Xのアプリ・grok.com（回数制限あり）</td><td>Xプレミアム 月980円（Grokの上限が上がる）</td><td>約950円</td></tr>
+            <tr><td><b>第4位 GLM</b></td><td>chat.z.ai</td><td>GLM Coding Plan 月18ドル（約2,800円）〜</td><td>約700円</td></tr>
+            <tr><td><b>第3位 DeepSeek</b></td><td>Web版・アプリ（完全無料）</td><td>なし</td><td>約190円（混んでいない時間は約95円）</td></tr>
+            <tr><td><b>第2位 Kimi</b></td><td>kimi.ai（無料で使える範囲は公式に記載なし）</td><td>月19ドル（約3,000円）〜</td><td>約2,400円</td></tr>
+            <tr><td><b>第1位 Qwen</b></td><td>Qwen Studio（chat.qwen.ai）</td><td>Token Plan 月8ドル（約1,270円）〜</td><td>約950円</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note"><b>表の見方：</b>円は1ドル＝158円前後（2026年10月9日 三菱UFJ銀行の仲値）で計算した目安です。カード払いは手数料などで数％高くなることがあります。「100万字あたり」は、AIに書いてもらう文章（出力）の料金です。日本語はおおむね1文字＝1トークン（AIが文章を数える単位）前後で計算していて、AIに読ませる文章（入力）の料金は別にかかります。</div>
+      <a class="toollink" href="https://www.bk.mufg.jp/ippan/kinri/list_j/kinri/kawase.html" target="_blank" rel="noopener">三菱UFJ銀行 外国為替相場</a>
+
+      <h3>仕事ごとの使い分け</h3>
+      <div class="grid">
+        <div class="grid-item tilt"><span class="tag">第5位</span><h4>Grok</h4><p>Xのポストを分析したい時や、会議を安く文字起こししたい時</p></div>
+        <div class="grid-item tilt"><span class="tag">第4位</span><h4>GLM</h4><p>時間がかかってもいいから、まとまった作業を任せたい時</p></div>
+        <div class="grid-item tilt"><span class="tag">第3位</span><h4>DeepSeek</h4><p>ほぼ0円で、大量の作業を回したい時</p></div>
+        <div class="grid-item tilt"><span class="tag">第2位</span><h4>Kimi</h4><p>調べものから、スライド作りまでまとめて任せたい時</p></div>
+        <div class="grid-item tilt"><span class="tag">第1位</span><h4>Qwen</h4><p>日本語の文章を、安く書いてもらいたい時</p></div>
+      </div>
+
+      <h3>まず1つ試すなら</h3>
+      <ul class="check">
+        <li>XのアプリからGrokに1つ質問してみる（STEP 02）</li>
+        <li>DeepSeekのWeb版に、量の多い作業を1つ頼んでみる（STEP 04）</li>
+        <li>chat.z.aiでGLMにWebページを1枚作ってもらう（STEP 03）</li>
+        <li>Qwen Studioで日本語のメールを1通書いてもらう（STEP 06）</li>
+      </ul>
+      <div class="note warn"><b>仕事で使う前に：</b>中国の会社のAIを仕事で使う時は、先に <a href="#s7">STEP 07 のチェックリスト</a> を見てください。入れていい情報かどうかを確かめるだけで、ほとんどのリスクは避けられます。</div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 02 Grok ============ -->
+  <section class="sec" id="s2">
+    <p class="sec-label rv">STEP 02</p>
+    <h2 class="sec-title rv">第5位 Grok：Xのアプリからすぐ使える</h2>
+    <p class="sec-lead rv">Xに入っているAIです。知っている人は多いですが、格安AIとして使えることはあまり知られていません。</p>
+
+    <div class="card rv">
+      <h3>得意なこと</h3>
+      <ul class="takeaway">
+        <li><b>Xを開いたまま、その場で聞ける</b><span>伸びたポストのURLを貼って、理由を分析してもらう使い方ができます。</span></li>
+        <li><b>会議やセミナーの文字起こしが安い</b><span>Grokを作っているxAIには、音声を文字にするサービス（API）もあります。料金は1時間あたり0.1ドル（約16円）です。僕は会議もセミナーも、基本的にはこれで文字起こししています。</span></li>
+        <li><b>コードを書く力も高い</b><span>プログラムを書かせる用途にも使えます。</span></li>
+      </ul>
+
+      <h3>始め方（Xのアプリ）</h3>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>Xのアプリ（またはx.com）を開く</h4>
+          <p>Grokは、Xが使えるすべての国で使えます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>画面の下（ナビゲーションバー）にあるGrokのアイコンを押す</h4>
+          <p>Grokのチャット画面が開きます。入力を始めるか、表示される提案から始めます。</p>
+          <a class="toollink" href="https://help.x.com/ja/using-x/about-grok" target="_blank" rel="noopener">X ヘルプ「Grokについて」</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>下のプロンプトを貼って送る</h4>
+          <p>プロンプト（AIへの指示文）の2行目に、分析したいポストのURLを貼ります。</p>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>本編で使ったプロンプト：ポストが伸びた理由を分析する</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>このポストが伸びた要因を分析して
+（ここにポストのURLを貼る）</pre>
+      </div>
+
+      <h3>料金</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>使い方</th><th>料金</th><th>メモ</th></tr></thead>
+          <tbody>
+            <tr><td>Xのアプリ・grok.com（無料）</td><td>0円</td><td>回数制限あり。回数は公式には公表されていません</td></tr>
+            <tr><td>Xプレミアム</td><td>月980円（Web版）</td><td>Grokの利用上限が引き上げられます。アプリ内で払うと価格が違うことがあります</td></tr>
+            <tr><td>grok.com のSuperGrok</td><td>月30ドル（約4,740円）</td><td>無料プランではエキスパートモードが使えません</td></tr>
+            <tr><td>API（使った分だけ）</td><td>文章100万字で約950円</td><td>入力は100万トークンあたり2ドル（約320円）</td></tr>
+            <tr><td>音声の文字起こし（API）</td><td>1時間 約16円</td><td>0.1ドル／時間（リアルタイムで文字にする場合は0.2ドル）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="toollink" href="https://help.x.com/ja/using-x/x-premium" target="_blank" rel="noopener">X ヘルプ「Xプレミアム」</a>
+      <a class="toollink" href="https://x.ai/pricing" target="_blank" rel="noopener">xAI 料金プラン</a>
+      <a class="toollink" href="https://grok.com" target="_blank" rel="noopener">grok.com</a>
+
+      <div class="note"><b>grok.com で使う場合：</b>X・メール・Apple・Google・GitHubのどれかで登録できます。入力欄の右で「ファスト／自動／エキスパート／ヘビー」のモードを選びます。</div>
+      <div class="note warn"><b>弱いところ：</b>日本語の文章を書く力が微妙です。日本語の文章は STEP 06 のQwenに任せるのがおすすめです。また、Xのアプリで使う時は、やり取りが学習に使われない設定にしておいてください（<a href="#s7">STEP 07</a>）。</div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 03 GLM ============ -->
+  <section class="sec" id="s3">
+    <p class="sec-label rv">STEP 03</p>
+    <h2 class="sec-title rv">第4位 GLM：時間がかかっても最後までやりきる</h2>
+    <p class="sec-lead rv">Z.aiという中国の会社が作っているAIです。使った分だけ払う料金は、5つの中で2番目に安いです。</p>
+
+    <div class="card rv">
+      <h3>得意なこと</h3>
+      <ul class="takeaway">
+        <li><b>最後まで作業をやりきる</b><span>Claude CodeとGLMで同じ課題を解かせた実験では、プログラムを書かせる課題はどちらも満点で互角でした。わざと仕込んだバグ（プログラムの間違い）も、両方とも全部直しました。</span></li>
+        <li><b>まとまった作業を任せるのに向いている</b><span>寝る前に投げて、朝に受け取るような使い方なら、時間がかかっても気になりません。</span></li>
+      </ul>
+
+      <h3>始め方（chat.z.ai）</h3>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>chat.z.ai を開いて無料登録する</h4>
+          <p>Google・メール・GitHubのどれかで登録できます。ログインしなくても使えますが、その時のモデルは軽い版のGLM-5.3-Flashです。</p>
+          <a class="toollink" href="https://chat.z.ai" target="_blank" rel="noopener">chat.z.ai</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>モデルの選択で「GLM-5.3」を選ぶ</h4>
+          <p>メニューに「GLM-5.3（Flagship model）」があります。ログイン前は選べない（灰色になっている）ので、登録してから選びます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>下のプロンプトを送る</h4>
+          <p>HTML（Webページを作るための言葉）で、セミナーの申込ページを1枚作ってもらいます。</p>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>本編で使ったプロンプト：Webページを1枚作ってもらう</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>セミナーの申込ページを実装してください。内容は仮で設定して。</pre>
+      </div>
+
+      <h3>料金</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>使い方</th><th>料金</th><th>メモ</th></tr></thead>
+          <tbody>
+            <tr><td>chat.z.ai（無料）</td><td>0円</td><td>無料で使える回数は公式に記載がありません</td></tr>
+            <tr><td>API（使った分だけ）</td><td>文章100万字で約700円</td><td>入力は100万トークンあたり1.4ドル（約220円）</td></tr>
+            <tr><td>GLM Coding Plan Lite</td><td>月18ドル（約2,800円）</td><td>プログラム用の月額プラン。3か月払いは20％引き、年払いは30％引き（月あたり12.6ドル）</td></tr>
+            <tr><td>GLM Coding Plan Pro / Max</td><td>月80ドル / 月168ドル</td><td>使える量が多いプラン</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="toollink" href="https://docs.z.ai/guides/overview/pricing" target="_blank" rel="noopener">Z.ai API料金</a>
+      <a class="toollink" href="https://z.ai/subscribe" target="_blank" rel="noopener">GLM Coding Plan</a>
+
+      <div class="note warn"><b>弱いところ：</b>慎重すぎて遠回りが多く、時間がかかります。先ほどの実験では、かかった時間はClaudeの10倍くらいでした。急ぎの作業はClaudeを使い、時間がかかっても困らない作業をGLMに回すのがおすすめです。</div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 04 DeepSeek ============ -->
+  <section class="sec" id="s4">
+    <p class="sec-label rv">STEP 04</p>
+    <h2 class="sec-title rv">第3位 DeepSeek：ほぼ0円で大量の作業を回す</h2>
+    <p class="sec-lead rv">中国製のAIです。一番の強みは安さで、Web版とアプリは完全無料で使えます。</p>
+
+    <div class="card rv">
+      <h3>得意なこと</h3>
+      <ul class="takeaway">
+        <li><b>数をたくさん出してもらう作業</b><span>Xのポストを50個まとめて作ってもらうような量の多い作業でも、料金を気にせず頼めます。</span></li>
+        <li><b>使った分だけ払う料金も5つの中で一番安い</b><span>APIで使っても、書いてもらう文章100万字で約190円。混んでいない時間はさらに半額です。</span></li>
+      </ul>
+
+      <h3>始め方（Web版・アプリ）</h3>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>Web版（chat.deepseek.com）を開くか、アプリを入れる</h4>
+          <p>Web版はログインが必要です。アプリはApp Storeなどから無料で入れられます。</p>
+          <a class="toollink" href="https://chat.deepseek.com" target="_blank" rel="noopener">DeepSeek Web版</a>
+          <a class="toollink" href="https://apps.apple.com/jp/app/deepseek-ai-assistant/id6737597349" target="_blank" rel="noopener">App Store「DeepSeek - AI アシスタント」</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>登録する</h4>
+          <p>電話番号かメールアドレス、またはGoogle・Appleのアカウントで登録できます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>ファイルを添付して、下のプロンプトを送る</h4>
+          <p>ポストの元になる情報（自分の発信内容のメモなど）をファイルで添付します。添付する中身は、<a href="#s7">STEP 07</a> のチェックを通したものにしてください。</p>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>本編で使ったプロンプト：ポストを50個まとめて作る</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>添付したファイルの情報を元に
+Xポストを50個作成してください</pre>
+      </div>
+
+      <h3>料金（APIで使う場合）</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>時間帯（日本時間）</th><th>書いてもらう文章100万字</th><th>読ませる文章100万トークン</th></tr></thead>
+          <tbody>
+            <tr><td>混んでいる時間：平日 10〜13時・15〜19時</td><td>約190円（1.2ドル）</td><td>約47円（0.3ドル）</td></tr>
+            <tr><td>それ以外の時間・土日（中国の祝日も）</td><td>約95円（0.6ドル）</td><td>約24円（0.15ドル）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>月額プランはありません。APIの料金は、先にチャージした残高から引かれます。チャージはPayPal・カード・Alipay・WeChat Payに対応しています。APIで指定するモデル名は <code>deepseek-flash</code> です。</p>
+      <a class="toollink" href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" rel="noopener">DeepSeek API 料金</a>
+
+      <div class="note warn"><b>弱いところ：</b>AIの点数を比べているサイトでは、5つの中で一番下です。質より量の作業に回すのがおすすめです。入れた内容は中国にあるサーバー（データを置いておくコンピューター）に保存されるので、仕事で使う前に必ず <a href="#s7">STEP 07</a> を確認してください。</div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 05 Kimi ============ -->
+  <section class="sec" id="s5">
+    <p class="sec-label rv">STEP 05</p>
+    <h2 class="sec-title rv">第2位 Kimi：調べものからスライド作りまで任せる</h2>
+    <p class="sec-lead rv">北京のMoonshot AIという会社が作っているAIです。格安AIの中では一番高いですが、作業を任せてファイルで受け取る使い方に向いています。</p>
+
+    <div class="card rv">
+      <h3>得意なこと</h3>
+      <ul class="takeaway">
+        <li><b>プログラムを書くことと、時間のかかる長い作業</b><span>日本語の力を測るテストでは、5つの中で2番目です。</span></li>
+        <li><b>調べるところから、ファイル作りまでまとめて任せられる</b><span>最新のK3は、スライド（.pptx）・文書（.docx）・表（.xlsx）・PDFのファイルを作れます。人が答えを見比べて投票するランキングでは、5つの中で一番上です。</span></li>
+      </ul>
+
+      <h3>始め方</h3>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>日本からは kimi.ai を開く</h4>
+          <p>kimi.com は中国本土向けの入口（WeChatや中国の電話番号でログインする画面）になっています。日本からは kimi.ai を使います。</p>
+          <a class="toollink" href="https://www.kimi.ai" target="_blank" rel="noopener">kimi.ai</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>Googleアカウントか電話番号で登録する</h4>
+          <p>電話番号の場合は、SMSで届く認証コードを入れます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>入力欄の上のモデル切り替えで「K3」を選ぶ</h4>
+          <p>今のKimiは、会話とAgent（作業を任せるモード）が1つにまとまっています。K3を選んで頼めば、調べものからファイル作りまで進めてくれます。左のメニューの「スライド」から始めることもできます。</p>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>本編で使ったプロンプト：調べてスライド5枚にまとめる</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>格安で使えるAIモデルを5つ調べて、料金と特徴をスライド5枚にまとめてください。</pre>
+      </div>
+      <div class="note"><b>ポイント：</b>スライドに入った料金や数字は、そのまま使わずに公式ページで確かめてください。AIが調べた数字は、古かったり間違っていたりすることがあります。</div>
+
+      <h3>料金</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>使い方</th><th>料金</th><th>メモ</th></tr></thead>
+          <tbody>
+            <tr><td>kimi.ai（無料）</td><td>0円</td><td>無料で使える範囲は公式に記載がありません</td></tr>
+            <tr><td>Moderato（月額）</td><td>月19ドル（約3,000円）</td><td>年払いなら月15ドル。上にAllegretto 39ドル、Allegro 99ドル、Vivace 199ドルがあります</td></tr>
+            <tr><td>API（使った分だけ）</td><td>文章100万字で約2,400円</td><td>入力は100万トークンあたり3ドル（約470円）。最低1ドルのチャージから</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="toollink" href="https://www.kimi.ai/help/membership/membership-pricing" target="_blank" rel="noopener">Kimi メンバーシップ料金</a>
+      <a class="toollink" href="https://platform.kimi.ai/docs/pricing/chat" target="_blank" rel="noopener">Kimi API 料金</a>
+
+      <div class="note warn"><b>弱いところ：</b>料金は、APIも月額のプランも5つの中で一番高いです。書くのも遅めです。チャットで答えてもらうより、作業を任せてファイルで受け取る使い方で元を取るのがおすすめです。</div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 06 Qwen ============ -->
+  <section class="sec" id="s6">
+    <p class="sec-label rv">STEP 06</p>
+    <h2 class="sec-title rv">第1位 Qwen：日本語の文章を安く書いてもらう</h2>
+    <p class="sec-lead rv">中国のアリババという会社が作っているAIです。日本語の力を測るテストでは、Claudeの次に高い点数を出しています。</p>
+
+    <div class="card rv">
+      <h3>得意なこと</h3>
+      <ul class="takeaway">
+        <li><b>日本語の文章</b><span>5つの中で日本語が一番強いAIです。お客さんへのメールのような文章も、自然に書いてくれます。</span></li>
+        <li><b>月額プランが安い</b><span>月8ドル（約1,270円）から使えて、GLMの約2,800円やKimiの約3,000円より、ずっと安いです。</span></li>
+      </ul>
+
+      <h3>始め方（Qwen Studio）</h3>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>Qwen Studio（chat.qwen.ai）を開いて登録する</h4>
+          <p>メール・Google・GitHub・Appleのどれかで登録できます。</p>
+          <a class="toollink" href="https://chat.qwen.ai" target="_blank" rel="noopener">Qwen Studio（chat.qwen.ai）</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>左上のモデル名から「Qwen3.8-Max」を選ぶ</h4>
+          <p>最初は「Qwen3.7-Plus」になっているので、一番新しいQwen3.8-Maxに切り替えます。入力欄の「Auto」で、考える深さ（Auto／Thinking／Fast）も選べます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>下のプロンプトを送る</h4>
+          <p>出てきた日本語が自然か、自分の目で確かめてみてください。</p>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>本編で使ったプロンプト：お礼のメールを書いてもらう</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>AI勉強会セミナーに申し込んでくれたお客さんへの、お礼のメールを書いてください。</pre>
+      </div>
+
+      <h3>料金</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>使い方</th><th>料金</th><th>メモ</th></tr></thead>
+          <tbody>
+            <tr><td>Qwen Studio（無料）</td><td>0円</td><td>無料で使える回数は公式に記載がありません</td></tr>
+            <tr><td>Token Plan Lite（月額）</td><td>月8ドル（約1,270円）</td><td>2026年10月11日時点は期間限定で月6ドル（約950円）。終了日は公表されていません</td></tr>
+            <tr><td>API（使った分だけ）</td><td>文章100万字で約950円</td><td>入力は100万トークンあたり2ドル（約320円）。新規登録すると無料枠があります（ふつう90日。支払い情報の登録が必要）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="toollink" href="https://www.qwencloud.com/pricing/token-plan" target="_blank" rel="noopener">QwenCloud Token Plan</a>
+      <a class="toollink" href="https://docs.qwencloud.com/token-plan/overview" target="_blank" rel="noopener">Token Plan の説明</a>
+
+      <h3>家のパソコンで無料で動かせる版もある</h3>
+      <p>Qwenには「Qwen3.8-27B」というモデルもあり、ダウンロードすれば誰でも無料で使えて、家のパソコンで動かせます（商用利用もできるライセンスです）。Ollama や LM Studio といった、パソコンでAIを動かすアプリから使えます。</p>
+      <a class="toollink" href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Hugging Face「Qwen3.8-27B」</a>
+      <div class="note"><b>注意：</b>動かすには、メモリの大きい高性能なパソコンが必要です。公式に必要なパソコンの条件は書かれていないので、まずは Qwen Studio で試してから考えるのがおすすめです。</div>
+
+      <div class="note warn"><b>弱いところ：</b>Kimiと同じで、書くのが遅めです。</div>
+    </div>
+  </section>
+
+  <!-- ============ STEP 07 Security ============ -->
+  <section class="sec" id="s7">
+    <p class="sec-label rv">STEP 07</p>
+    <h2 class="sec-title rv">格安AIに入れてはいけない情報のチェックリスト</h2>
+    <p class="sec-lead rv">全部を怖がる必要はありません。渡す前に確かめるだけで、格安AIも安心して使えます。</p>
+
+    <div class="card rv">
+      <p>公開済みの情報、一般的な質問、アイデア出し、自分で書いた文章の手直しなどは、どんどん渡して大丈夫です。下のチェックに引っかかるものだけを外す、という使い方をしてください。</p>
+
+      <h3>入れる前に確かめること</h3>
+      <ul class="check">
+        <li><b>パスワード・ログイン用の認証コード・APIキーが入っていないか。</b>中国のAIには入れない（ほかのAIにも基本は入れない）</li>
+        <li><b>名前・住所・電話番号・メールアドレスなどの個人情報が入っていないか。</b>中国のAIには入れない</li>
+        <li><b>お客さんの情報（名簿・問い合わせ文・購入履歴・LINEのやり取りなど）が残っていないか。</b>中国のAIには入れない</li>
+        <li><b>仕事の機密（公開前の売上・契約書・取引先との秘密の情報など）が入っていないか。</b>中国のAIには入れない</li>
+        <li><b>健康・お金の口座・身分証など、特に慎重に扱う情報が入っていないか</b></li>
+        <li><b>迷ったら、名前を「Aさん」に置き換え、数字をぼかしてから渡す。</b>判断がつかなければ、個人情報は外す</li>
+        <li><b>そのAIのデータがどこの国に保存されるかを見たか</b>（下の表）</li>
+        <li><b>入力が学習に使われる設定のままになっていないか。</b>オフにできるならオフ、できないなら入れる内容を絞る</li>
+        <li><b>👍👎の評価を押していないか。</b>学習をオフにしていても、評価した会話は学習に使われることがある</li>
+        <li><b>会話の共有リンクを作る時、個人情報が入っていないか</b></li>
+        <li><b>どのAIでも、渡す前に「お客さんの個人情報が残っていないか」「このAIサービスに渡していい情報か」を確かめる。</b>利用規約とプライバシーポリシーを一度は見る</li>
+      </ul>
+
+      <h3>国の機関が出している情報</h3>
+      <p>DeepSeekについては、日本の個人情報保護委員会が2025年2月3日に「DeepSeekに関する情報提供」を出しています。使うことを禁止したものではなく、次の2点を知った上で判断してほしい、という案内です。</p>
+      <ol class="takeaway">
+        <li><b>入れたデータは、中国にあるサーバーに保存される</b><span>サーバーは、データを置いておくコンピューターのことです。</span></li>
+        <li><b>そのデータには、中国の法令が適用される</b><span>個人情報保護法・データセキュリティ法・国家情報法などの中国の法律が例に挙げられています。</span></li>
+      </ol>
+      <a class="toollink" href="https://www.ppc.go.jp/news/careful_information/250203_alert_deepseek/" target="_blank" rel="noopener">個人情報保護委員会「DeepSeekに関する情報提供」</a>
+      <a class="toollink" href="https://www.ppc.go.jp/news/careful_information/230602_AI_utilize_alert/" target="_blank" rel="noopener">個人情報保護委員会「生成AIサービスの利用に関する注意喚起等」</a>
+      <a class="toollink" href="https://www.ipa.go.jp/digital/ai/security/ai_security_tips.html" target="_blank" rel="noopener">IPA「AI利用者のためのセキュリティ豆知識」</a>
+
+      <h3>データが保存される場所（各社のプライバシーポリシーより）</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>AI</th><th>保存・処理される場所</th><th>学習への利用</th></tr></thead>
+          <tbody>
+            <tr><td>DeepSeek（Web版・アプリ）</td><td>中国</td><td>学習に使われることがある。断る権利があり、メール（privacy@deepseek.com）で申し出る</td></tr>
+            <tr><td>Kimi（チャット）</td><td>中国（北京の会社名義のポリシー）</td><td>入力と出力をモデルの改善に使う。断る場合はカスタマーサービスに申請</td></tr>
+            <tr><td>Kimi（API）</td><td>シンガポール</td><td>モデルの改善に役立てると記載</td></tr>
+            <tr><td>GLM（Z.ai）</td><td>シンガポール</td><td>チャットは改善に使う権利がある。APIは本人が同意しない限り使わない</td></tr>
+            <tr><td>Qwen（Qwen Studio）</td><td>シンガポール</td><td>個人が分からない形にした入力と評価を、学習に使うことがある</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="toollink" href="https://cdn.deepseek.com/policies/ja-JP/deepseek-privacy-policy.html" target="_blank" rel="noopener">DeepSeek プライバシーポリシー</a>
+      <a class="toollink" href="https://www.kimi.com/user/agreement/userPrivacy?version=v2" target="_blank" rel="noopener">Kimi プライバシーポリシー</a>
+      <a class="toollink" href="https://platform.kimi.ai/docs/agreement/userprivacy" target="_blank" rel="noopener">Kimi API プライバシーポリシー</a>
+      <a class="toollink" href="https://docs.z.ai/legal-agreement/privacy-policy" target="_blank" rel="noopener">Z.ai プライバシーポリシー</a>
+      <a class="toollink" href="https://qwen.ai/privacypolicy" target="_blank" rel="noopener">Qwen プライバシーポリシー</a>
+      <div class="note"><b>表の見方：</b>2026年10月11日時点の各社のポリシーの記載です。同じ会社でも、チャットとAPIで保存場所が違うことがあります。ポリシーは変わるので、使い始める前に一度確認してください。</div>
+
+      <h3>Grokのやり取りを学習に使わせない設定（Xのアプリ）</h3>
+      <p>Xの中のGrokは、何もしなければ、やり取りが学習に使われる設定（自分でオフにする方式）です。次の手順でオフにできます。</p>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body"><h4>Xの設定を開いて［プライバシーと安全］を選ぶ</h4></div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body"><h4>「データの共有とパーソナライゼーション」の［Grokとサードパーティコラボレーター］を選ぶ</h4></div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>［データ共有］のチェックを外す</h4>
+          <p>「公開データに加えて、GrokおよびxAIでのやり取り、インプット、結果をトレーニングと調整に利用することを許可します。」のチェックを外します。</p>
+          <a class="toollink" href="https://help.x.com/ja/using-x/about-grok" target="_blank" rel="noopener">X ヘルプ「Grokについて」</a>
+        </div>
+      </div>
+      <div class="note"><b>grok.com やGrokのアプリで使う場合：</b>Settings → Data Controls（grok.comは Data）→「Improve the model」でオフにできます。おばけのアイコンの Private Chat は学習に使われず、30日以内に消えます。</div>
+      <a class="toollink" href="https://x.ai/legal/faq" target="_blank" rel="noopener">xAI よくある質問</a>
+    </div>
+  </section>
+
+  <!-- ============ STEP 08 Claude Code ============ -->
+  <section class="sec" id="s8">
+    <p class="sec-label rv">STEP 08</p>
+    <h2 class="sec-title rv">Claude Codeにつなぐ手順（4社分）</h2>
+    <p class="sec-lead rv">格安AIのサイトでAPIキーという鍵を作り、Claude Codeの設定に、その会社の接続先と一緒に入れるだけです。</p>
+
+    <div class="card rv">
+      <p>Claude Code（パソコンの上でAIに作業をさせるためのツール）は、中で動くAIを格安AIに替えられます。つないでいる間は、Claudeのプランの上限はかからずに、格安AIの料金で作業を続けられます。Kimi・DeepSeek・GLM・Qwenの4つは、その手順を公式に出しています。</p>
+
+      <h3>先に知っておくこと</h3>
+      <ul class="check">
+        <li><b>ターミナル（文字を打ってパソコンに指示を出す画面）版のClaude Code（またはVS Codeの拡張機能）で使います。</b>Claude Codeのデスクトップアプリは、この設定を読みません</li>
+        <li><b>Claude Codeを作っているAnthropicは、Claude以外のAIにつなぐ使い方を公式にはサポートしていません。</b>動くかどうかは各社の対応次第です</li>
+        <li><b>料金は、格安AIの会社に払います。</b>つないでいる間はClaudeのプランの上限は使われず、そのAPIキーの持ち主に使った分の料金がかかります</li>
+        <li><b>接続先（ANTHROPIC_BASE_URL）と鍵（APIキー）は、必ずセットで設定します。</b>接続先だけだと、今までのClaudeのログインが使われたままになります</li>
+        <li><b>つないでいる間は、スマホから操作するリモートコントロールが使えなくなります</b></li>
+      </ul>
+
+      <h3>4社の違い</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>AI</th><th>使う料金</th><th>鍵を作る場所</th><th>接続先</th></tr></thead>
+          <tbody>
+            <tr><td>Kimi（API）</td><td>使った分だけ（最低1ドルのチャージ）</td><td>platform.kimi.ai の API Keys</td><td><code>https://api.moonshot.ai/anthropic</code></td></tr>
+            <tr><td>Kimi Code</td><td>Kimiの月額プラン（Plus／Moderato以上）</td><td>Kimi Code Console</td><td><code>https://api.kimi.ai/coding/</code></td></tr>
+            <tr><td>DeepSeek</td><td>使った分だけ（月額なし）</td><td>platform.deepseek.com の API Keys</td><td><code>https://api.deepseek.com/anthropic</code></td></tr>
+            <tr><td>GLM</td><td>GLM Coding Plan（月18ドル〜）</td><td>z.ai の API Keys</td><td><code>https://api.z.ai/api/anthropic</code></td></tr>
+            <tr><td>Qwen</td><td>Token Plan（月8ドル〜）</td><td>QwenCloud の API Keys</td><td><code>https://token-plan.maas.qwencloudapi.com/apps/anthropic</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>共通の流れ</h3>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>つなぎたい会社のサイトで、APIキーを作る</h4>
+          <p>APIキーは、そのサービスを使うための鍵です。作った時に一度しか全部表示されないものが多いので、すぐにコピーして安全な場所に保存します。人に見せたり、SNSに貼ったりしないでください。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>Claude Codeの設定ファイル（settings.json）に、各社の設定を書く</h4>
+          <p>設定ファイルは、ホームフォルダ（自分のユーザー名のフォルダ）の中にある「.claude」というフォルダの settings.json です。Windowsでは <code>%USERPROFILE%\.claude\settings.json</code> です。「.」で始まるフォルダは、ふだんは隠れていて見えません。自分で開いて書いてもいいですし、下のプロンプトでClaude Codeに書いてもらうこともできます。鍵はプロジェクトのフォルダの中の設定ファイルには書かないでください（共有した時に鍵が漏れます）。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>Claude Codeを終了して、起動し直す</h4>
+          <p>設定は起動した時に読み込まれます。新しいターミナルで <code>claude</code> と打って起動します。最初に「このAPIキーを使いますか」と聞かれたら、許可します。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">4</div>
+        <div class="step-body">
+          <h4><code>/status</code> で、つながっているか確かめる</h4>
+          <p>Claude Codeの中で <code>/status</code> と打ちます。「Anthropic base URL」の行に、つないだ会社の接続先が出ていれば成功です。</p>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>Claude Codeに設定を書いてもらうプロンプト（つなぐ前の、いつものClaude Codeで使う）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>~/.claude/settings.json に、格安AIにつなぐ設定を追加してください。
+・作業の前に、今の settings.json を同じフォルダに settings.backup.json としてコピーしておいてください
+・すでにある設定は消さずに、下の "env" の中身だけを追加してください（同じ名前の項目がある時は、書き換える前に教えてください）
+・APIキーの所は、書いてある文字のままにしてください。キーは私が自分で貼ります
+・最後に、私がAPIキーを貼る場所と、元に戻す方法を教えてください
+
+（ここに、下の各社の設定をコピーして貼る）</pre>
+      </div>
+
+      <h3>Kimi（使った分だけ払うAPI）</h3>
+      <p>platform.kimi.ai にGoogleかメールでサインインして、API Keys で鍵を作ります。使い始めるには最低1ドルのチャージが必要です。公式に書かれているチャージ方法は WeChat Pay と Alipay です。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>Kimi（API）の settings.json（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.moonshot.ai/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "YOUR_MOONSHOT_API_KEY",
+    "ANTHROPIC_MODEL": "kimi-k3[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "kimi-k3[1m]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-k3[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "kimi-k2.7-code",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "kimi-k3[1m]",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "kimi-k3[1m]",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "1000000",
+    "CLAUDE_CODE_EFFORT_LEVEL": "max"
+  }
+}</pre>
+      </div>
+      <div class="note warn"><b>Kimiの注意：</b>この設定で使う <code>kimi-k2.7-code</code> は、Claude Codeの「考える」機能をオンにしないとエラーになります（Macは Option+T、WindowsはAlt+Tで切り替え）。また、チャージが1ドルだけの間は「同時に1つ・1分に3回まで」と使える量がかなり少ないです（累計10ドルで1分に100回まで増えます）。</div>
+      <a class="toollink" href="https://platform.kimi.ai/console/api-keys" target="_blank" rel="noopener">Kimi API Keys</a>
+      <a class="toollink" href="https://platform.kimi.ai/docs/guide/claude-code-kimi" target="_blank" rel="noopener">Kimi 公式：Claude Codeで使う</a>
+
+      <h3>Kimi Code（月額プランで使う）</h3>
+      <p>Kimiの月額プラン（コーディング用の枠がある、Plus／Moderato以上）に入っている場合は、こちらを使います。Kimi Code Console で「Create API Key」から鍵を作ります。APIの鍵とは別物なので、混ぜないでください。公式ページには、設定の前に実行する準備のスクリプトも載っているので、先にそちらを済ませます。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>Kimi Code の settings.json（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.kimi.ai/coding/",
+    "ANTHROPIC_API_KEY": "Your API Key",
+    "ANTHROPIC_MODEL": "k3-256k",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "k3-256k",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "k3-256k",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "k3-256k",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "k3-256k",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "k3-256k",
+    "CLAUDE_CODE_EFFORT_LEVEL": "high",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "262144",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "262144"
+  }
+}</pre>
+      </div>
+      <a class="toollink" href="https://www.kimi.com/code/console" target="_blank" rel="noopener">Kimi Code Console</a>
+      <a class="toollink" href="https://www.kimi.com/code/docs/en/third-party-tools/claude-code.html" target="_blank" rel="noopener">Kimi Code 公式：Claude Codeで使う</a>
+
+      <h3>DeepSeek</h3>
+      <p>platform.deepseek.com の API Keys で鍵を作り、Top Up のページでチャージします（PayPal・カード・Alipay・WeChat Pay）。月額プランはありません。公式の手順は、ターミナルで次の行を打ってから <code>claude</code> を起動する形です。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>DeepSeek：Mac（ターミナル）で打つ設定（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+export ANTHROPIC_AUTH_TOKEN=&lt;your DeepSeek API Key&gt;
+export ANTHROPIC_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
+export CLAUDE_CODE_EFFORT_LEVEL=max
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432</pre>
+      </div>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>DeepSeek：Windowsの PowerShell（Windowsで文字の指示を打つ画面）で打つ設定（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>$env:ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
+$env:ANTHROPIC_AUTH_TOKEN="&lt;your DeepSeek API Key&gt;"
+$env:ANTHROPIC_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
+$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
+$env:CLAUDE_CODE_EFFORT_LEVEL="max"
+$env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"</pre>
+      </div>
+      <div class="note"><b>ポイント：</b><code>&lt;your DeepSeek API Key&gt;</code> の所を、自分の鍵に置き換えて打ちます。このやり方は、そのターミナルを開いている間だけ有効です。毎回使うなら、同じ項目を settings.json の "env" に書く（上のプロンプトでClaude Codeに頼む）と、閉じても残ります。</div>
+      <a class="toollink" href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek API Keys</a>
+      <a class="toollink" href="https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code" target="_blank" rel="noopener">DeepSeek 公式：Claude Codeで使う</a>
+
+      <h3>GLM（GLM Coding Plan）</h3>
+      <p>GLMの公式手順は、月額のGLM Coding Plan に入っている前提です。z.ai/subscribe でプランを選んで入り、API Keys のページで鍵を作ります。設定は、案内に答えていくだけの自動ツールが一番かんたんです（Node.js 18以上が必要）。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>GLM：自動で設定するツール（ターミナルで打つ）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>npx @z_ai/coding-helper</pre>
+      </div>
+      <p>手で書く場合は、settings.json に次の設定を入れます。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>GLM の settings.json（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>{
+        "env": {
+        "ANTHROPIC_AUTH_TOKEN": "your_zai_api_key",
+        "ANTHROPIC_BASE_URL": "https://api.z.ai/api/anthropic",
+        "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-5.3-flash[1m]",
+        "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-5.3[1m]",
+        "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.3[1m]",
+        "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "1000000",
+        "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": 1,
+        "API_TIMEOUT_MS": "3000000"
+    }
+}</pre>
+      </div>
+      <div class="note"><b>GLMの注意：</b>GLM-5.3は文字だけを読めます。画像を読ませたい時は、GLM-5.3-Flashを使います。月額プランの解約は、次の請求日の3日前までに済ませておくと安全です。</div>
+      <a class="toollink" href="https://z.ai/subscribe" target="_blank" rel="noopener">GLM Coding Plan</a>
+      <a class="toollink" href="https://z.ai/manage-apikey/apikey-list" target="_blank" rel="noopener">Z.ai API Keys</a>
+      <a class="toollink" href="https://docs.z.ai/devpack/tool/claude" target="_blank" rel="noopener">Z.ai 公式：Claude Codeで使う</a>
+
+      <h3>Qwen（Token Plan）</h3>
+      <p>QwenCloud にGitHubかメールでサインインし、Token Plan に入ってから、Token Plan用の鍵（<code>sk-sp-</code> で始まる）を作ります。使った分だけ払う形の鍵とは別物です。先に <code>~/.claude.json</code> に <code>"hasCompletedOnboarding": true</code> を入れておくと、Claudeのログイン確認を飛ばせます。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>Qwen（Token Plan）の settings.json（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "YOUR_API_KEY",
+    "ANTHROPIC_BASE_URL": "https://token-plan.maas.qwencloudapi.com/apps/anthropic",
+    "ANTHROPIC_MODEL": "auto",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "qwen3.6-flash",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "qwen3.8-flash",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "qwen3.8-max",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "auto",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "983616"
+  }
+}</pre>
+      </div>
+      <div class="note warn"><b>Qwenの注意：</b>Token Planは、人がツールの中で対話しながら使うためのプランです。自動で動かす仕組みや、決まった時間に動かす使い方は規約で禁止されています。鍵の種類と接続先が合っていないと、401（invalid_api_key）のエラーになります。</div>
+      <a class="toollink" href="https://home.qwencloud.com/api-keys" target="_blank" rel="noopener">QwenCloud API Keys</a>
+      <a class="toollink" href="https://docs.qwencloud.com/developer-guides/clients-and-developer-tools/claude-code" target="_blank" rel="noopener">QwenCloud 公式：Claude Codeで使う</a>
+
+      <h3>普通のClaudeに戻す方法</h3>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>settings.json の "env" から、追加した行を消す</h4>
+          <p>上のプロンプトで作ったバックアップ（settings.backup.json）に戻すのが一番確実です。Claudeのログインは消えずに残っているので、設定を外せば元に戻ります。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>ターミナルで打った設定（export）は、ターミナルを閉じれば消える</h4>
+          <p>Kimi Codeのように ANTHROPIC_API_KEY を使った場合は、<code>unset ANTHROPIC_API_KEY</code> で外せます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>Claude Codeを起動し直して、<code>/status</code> で確かめる</h4>
+          <p>「Anthropic base URL」の行が消えていれば、元のClaudeに戻っています。</p>
+        </div>
+      </div>
+      <a class="toollink" href="https://code.claude.com/docs/en/llm-gateway-connect" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a>
+    </div>
+  </section>
+
+  <!-- ============ STEP 09 Codex ============ -->
+  <section class="sec" id="s9">
+    <p class="sec-label rv">STEP 09</p>
+    <h2 class="sec-title rv">Codexにつなぐ手順（4社分）</h2>
+    <p class="sec-lead rv">Codexも、設定ファイル（config.toml）に格安AIの接続先と鍵を書けば、中で動くAIを替えられます。</p>
+
+    <div class="card rv">
+      <h3>先に知っておくこと</h3>
+      <ul class="check">
+        <li><b>設定ファイルの場所</b>は、Macが <code>~/.codex/config.toml</code>、Windowsが <code>%USERPROFILE%\.codex\config.toml</code> です。ターミナル版のCodex、ChatGPTのデスクトップアプリ、VS Codeの拡張機能は、同じファイルを読みます</li>
+        <li><b><code>model</code> や <code>model_provider</code> の行は、<code>[ ]</code> で始まる行より上に書きます。</b>下に書くと読み込まれません</li>
+        <li><b>書き換えたら、Codexを終了して起動し直します。</b>設定は起動した時にだけ読み込まれます</li>
+        <li><b>ターミナルで設定した環境変数（パソコンに覚えさせておく設定の値）は、デスクトップアプリには届かないことがあります。</b>その場合は各社の公式ページの方法に従います</li>
+      </ul>
+
+      <h3>4社の違い</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>AI</th><th>一番かんたんな方法</th><th>鍵の置き場所</th><th>追加のファイル</th></tr></thead>
+          <tbody>
+            <tr><td>DeepSeek</td><td>公式の自動設定スクリプト</td><td>スクリプトが聞いてくる</td><td>スクリプトが作る</td></tr>
+            <tr><td>GLM（Coding Plan）</td><td>自動設定ツール <code>npx @z_ai/coding-helper</code></td><td>config.toml に書く</td><td><code>~/.codex/models.json</code></td></tr>
+            <tr><td>Kimi（API）</td><td>config.toml に書く</td><td>環境変数 KIMI_API_KEY</td><td>なし</td></tr>
+            <tr><td>Qwen（Token Plan）</td><td>config.toml に書く</td><td>環境変数 OPENAI_API_KEY</td><td><code>~/.codex/model-catalog.local.json</code>（公式ページからコピー）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>DeepSeek：自動設定スクリプト（おすすめ）</h3>
+      <p>先にCodex（またはChatGPTのデスクトップアプリ）を入れて、一度起動しておきます。そのあと、ターミナルで次の1行を打ちます。メニューで 1 を選ぶと deepseek-flash、2 を選ぶと deepseek-v4-pro が設定されます。最初にAPIキー（<code>sk-</code> で始まる）を聞かれるので、貼り付けます。今の設定は自動でバックアップされます。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>DeepSeek：Mac・Linux（公式）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>bash &lt;(curl -fsSL https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.sh)</pre>
+      </div>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>DeepSeek：Windows PowerShell（公式）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.ps1 | iex</pre>
+      </div>
+      <div class="note"><b>ポイント：</b>同じスクリプトでメニューの 9 を選ぶと、DeepSeekの設定を消して元のCodexに戻せます。スクリプトは、公式ページに書かれたこの1行だけを使ってください。</div>
+      <a class="toollink" href="https://api-docs.deepseek.com/quick_start/agent_integrations/codex" target="_blank" rel="noopener">DeepSeek 公式：Codexで使う</a>
+
+      <h3>GLM（GLM Coding Plan）</h3>
+      <p>Claude Codeと同じ自動設定ツール（<code>npx @z_ai/coding-helper</code>）が、Codexの設定もしてくれます。手で書く場合は、まず <code>~/.codex/models.json</code> を作り、そのあと config.toml に次の設定を書きます。<code>&lt;Your API Key&gt;</code> の所を自分の鍵に置き換えます。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>GLM：~/.codex/models.json（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>{
+    "models": [
+        {
+            "slug": "glm-5.3",
+            "display_name": "glm-5.3",
+            "description": "Z.ai's latest flagship model",
+            "default_reasoning_level": "max",
+            "supported_reasoning_levels": [
+                {
+                    "effort": "low",
+                    "description": "Light reasoning"
+                },
+                {
+                    "effort": "high",
+                    "description": "Enhanced reasoning"
+                },
+                {
+                    "effort": "max",
+                    "description": "Deep reasoning"
+                }
+            ],
+            "shell_type": "shell_command",
+            "visibility": "list",
+            "supported_in_api": true,
+            "priority": 0,
+            "base_instructions": "",
+            "supports_reasoning_summaries": true,
+            "default_reasoning_summary": "none",
+            "support_verbosity": false,
+            "apply_patch_tool_type": "freeform",
+            "truncation_policy": {
+                "mode": "bytes",
+                "limit": 10000
+            },
+            "context_window": 1048576,
+            "max_context_window": 1048576,
+            "effective_context_window_percent": 95,
+            "supports_parallel_tool_calls": true,
+            "experimental_supported_tools": [],
+            "input_modalities": [
+                "text"
+            ]
+        }
+    ]
+}</pre>
+      </div>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>GLM：~/.codex/config.toml（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>model_provider = "ZAI"
+model = "glm-5.3"
+model_reasoning_effort = "max"
+model_catalog_json = "~/.codex/models.json"
+
+[model_providers.ZAI]
+name = "ZAI"
+base_url = "https://api.z.ai/api/v1"
+experimental_bearer_token = "&lt;Your API Key&gt;"
+wire_api = "responses"</pre>
+      </div>
+      <a class="toollink" href="https://docs.z.ai/devpack/tool/codex" target="_blank" rel="noopener">Z.ai 公式：Codexで使う</a>
+
+      <h3>Kimi（使った分だけ払うAPI）</h3>
+      <p>config.toml に次の設定を書きます。すでに <code>model</code> や <code>model_provider</code> の行がある時は、その値を書き換えます。鍵は config.toml には書かず、環境変数 KIMI_API_KEY に入れます。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>Kimi：~/.codex/config.toml（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>model = "kimi-k3"
+model_provider = "kimi"
+model_context_window = 1048576
+
+[model_providers.kimi]
+name = "Kimi"
+base_url = "https://api.moonshot.ai/v1"
+env_key = "KIMI_API_KEY"
+wire_api = "responses"</pre>
+      </div>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>Kimi：鍵を入れる（Macのターミナル・公式）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>echo "Paste your Kimi API key and press Enter (input is hidden):"
+read -s KIMI_API_KEY
+export KIMI_API_KEY</pre>
+      </div>
+      <div class="note"><b>ポイント：</b>このやり方は、そのターミナルを開いている間だけ有効です。毎回使う場合や、Windowsの場合は、公式ページの手順で保存してください。そのあと、作業するフォルダで <code>codex</code> と打って起動し、<code>kimi-k3</code> と表示されれば成功です。Kimiの月額プラン（Kimi Code）で使う場合は、接続先と鍵が別になるので、Kimi Code の公式ページの手順に従います。</div>
+      <a class="toollink" href="https://platform.kimi.ai/docs/guide/codex-kimi" target="_blank" rel="noopener">Kimi 公式：Codexで使う</a>
+      <a class="toollink" href="https://www.kimi.com/code/docs/en/third-party-tools/codex.html" target="_blank" rel="noopener">Kimi Code 公式：Codexで使う</a>
+
+      <h3>Qwen（Token Plan・個人向け）</h3>
+      <p>鍵は環境変数 OPENAI_API_KEY に入れます（Token Plan用の鍵を使います）。config.toml に次の設定を書き、モデルの一覧ファイル（<code>~/.codex/model-catalog.local.json</code>）を公式ページからコピーして作り、config.toml に <code>model_catalog_json = "~/.codex/model-catalog.local.json"</code> を足します。この行も <code>[ ]</code> の行より上に書きます。</p>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>Qwen：鍵を入れる（Macのターミナル・公式）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>echo 'export OPENAI_API_KEY="YOUR_API_KEY"' &gt;&gt; ~/.zshrc
+source ~/.zshrc</pre>
+      </div>
+      <div class="prompt">
+        <div class="prompt-head">
+          <b>Qwen：~/.codex/config.toml（公式の例そのまま）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>model_provider = "Model_Studio_Token_Plan_Personal"
+model = "auto"
+[model_providers.Model_Studio_Token_Plan_Personal]
+name = "Model_Studio_Token_Plan_Personal"
+base_url = "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1"
+env_key = "OPENAI_API_KEY"
+wire_api = "responses"</pre>
+      </div>
+      <div class="note warn"><b>Qwenの注意：</b><code>OPENAI_API_KEY</code> は、ほかのツールも読むことがある名前です。また、Token Planは人が対話しながら使うためのプランで、自動で動かす使い方は規約で禁止されています。</div>
+      <a class="toollink" href="https://docs.qwencloud.com/developer-guides/clients-and-developer-tools/codex" target="_blank" rel="noopener">QwenCloud 公式：Codexで使う</a>
+
+      <h3>元のCodexに戻す方法</h3>
+      <ul class="check">
+        <li>config.toml の <code>model_provider</code> の行を消す（または <code>model_provider = "openai"</code> にする）。<code>model</code> と <code>model_catalog_json</code> の行も消す</li>
+        <li>DeepSeekを自動設定スクリプトで入れた場合は、もう一度スクリプトを動かしてメニューの 9 を選ぶ</li>
+        <li>Codexを起動し直す。会話の履歴は、設定ごとに分けて保存されていて、今の設定に合う方だけが表示されます（消えてはいません）</li>
+      </ul>
+      <a class="toollink" href="https://learn.chatgpt.com/docs/config-file/config-advanced" target="_blank" rel="noopener">Codex 公式：設定の詳しい説明</a>
+
+      <ol class="takeaway">
+        <li><b>まずは無料で触れるところから1つ</b><span>Grok・DeepSeekのWeb版・chat.z.ai・Qwen Studioのどれかで、本編のプロンプトを1つ試してみてください。</span></li>
+        <li><b>仕事ごとにAIを選ぶ</b><span>1つのAIに全部任せるのではなく、STEP 01 の使い分けで選びます。</span></li>
+        <li><b>上限が来たら、格安AIにつないで続ける</b><span>安さにこだわるなら、今使っているClaude CodeやCodexに、格安AIをAPIでつないで使うのが一番安く済むと思います。</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ [C:締めCTA] ============ -->
+  <section class="closing rv">
+    <div class="closing-inner">
+      <h2>格安AIを使いこなせたら、次の一歩へ</h2>
+      <p>この資料の手順で、今日から格安AIを仕事に使い始められます。さらに深く学びたい方へ、公式LINEから参加できる「AI×SNS攻略 月額0円コミュニティ」（LINEオープンチャット）をご用意しています。追加12大特典に加えて、最新のAI×マーケティング情報を僕がキャッチアップして配信しています。</p>
+      <p>コミュニティでは、累計3,000名以上が参加した『AI駆動型コンテンツビジネス 0→100完全攻略セミナー』にも完全無料でご招待しています。参加で豪華20大特典がもらえてしまうので、ぜひこちらもご活用ください。</p>
+
+      <div class="bonus">
+        <div><b>10大特典</b><span>公式LINE（受け取り済み）</span></div>
+        <div><b>追加12大特典</b><span>AI×SNS攻略 月額0円コミュニティ</span></div>
+        <div><b>20大特典</b><span>0→100完全攻略セミナー</span></div>
+      </div>
+
+      <a class="btn" href="https://utage-system.com/line/open/ttS3H5oAa7lk?mtid=gb3g3fVXON1c" target="_blank" rel="noopener">月額0円コミュニティの案内を受け取る</a>
+      <p class="hero-meta">※ オープンチャットへの参加案内は、公式LINEのトークに届きます。</p>
+    </div>
+  </section>
+
+  <p class="foot">星川ユウヤ</p>
+</div>
+
+
+<button class="totop" id="totop" type="button" aria-label="ページ上部へ戻る">↑</button>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* [C:進捗バー] + [C:トップへ戻る] */
+  var bar = document.getElementById('bar');
+  var totop = document.getElementById('totop');
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    var p = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    if (bar) bar.style.width = p + '%';
+    if (totop) totop.classList.toggle('show', h.scrollTop > 640);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  if (totop) totop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+  });
+
+  /* [C:出現アニメーション] 画面に入ったらふわっと表示 */
+  var rv = document.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -12% 0px', threshold:0});  /* threshold>0だと、ビューポートの十数倍の高さの要素（長文プロンプトのカード等）で一生発火せず透明のまま章が消える（2026-08-20 No.12で実発生: 19,267pxのカードは最大でも3.7%しか見えない） */
+    rv.forEach(function(el){ if (el.offsetHeight > window.innerHeight) { el.classList.add('in'); } else { io.observe(el); } });  /* 画面より高い要素はアニメさせない。動いて見えないうえ、発火条件に届かず消える事故の元 */
+  } else {
+    rv.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* 最後の砦: 何かの理由で発火しなかった .rv を読み込み2.5秒後に強制表示する。
+     アニメを諦めるより、章が丸ごと消えるほうが事故（2026-08-20 No.12 / 2026-09-25 No.9・No.11） */
+  setTimeout(function(){ rv.forEach(function(el){ el.classList.add('in'); }); }, 2500);
+
+  /* [C:目次] + [C:サイド進捗ナビ] 現在地ハイライト */
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section.sec[id]'));
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.sidenav a'));
+  if (secs.length && 'IntersectionObserver' in window){
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var id = '#' + e.target.id;
+        tocLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === id); });
+        navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === id); });
+      });
+    }, {rootMargin:'-45% 0px -45% 0px'});
+    secs.forEach(function(s){ spy.observe(s); });
+  }
+
+  /* [C:プロンプト枠] コピーボタン */
+  document.querySelectorAll('.prompt .copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var pre = btn.closest('.prompt').querySelector('pre');
+      if(!pre) return;
+      var text = pre.innerText;
+      var done = function(){
+        var old = btn.textContent;
+        btn.textContent = 'コピーしました';
+        btn.classList.add('done');
+        setTimeout(function(){ btn.textContent = old; btn.classList.remove('done'); }, 1600);
+      };
+      if (navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+      function fallback(){
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly','');
+        ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch(e){}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  if (reduce) return;
+
+  /* [C:ヒーロー] マウス追従の光。触っていない時は中央 */
+  var hero = document.getElementById('hero');
+  var glow = document.getElementById('glow');
+  if (hero && glow){
+    hero.addEventListener('pointermove', function(ev){
+      var r = hero.getBoundingClientRect();
+      glow.style.setProperty('--mx', ((ev.clientX - r.left) / r.width * 100) + '%');
+      glow.style.setProperty('--my', ((ev.clientY - r.top) / r.height * 100) + '%');
+    });
+  }
+
+  /* [C:3Dホバーカード] 指で触る端末では無効（横スクロールを出さないため） */
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+    document.querySelectorAll('.tilt').forEach(function(el){
+      el.addEventListener('pointermove', function(ev){
+        var r = el.getBoundingClientRect();
+        var rx = ((ev.clientY - r.top) / r.height - .5) * -5;
+        var ry = ((ev.clientX - r.left) / r.width - .5) * 5;
+        el.style.transform = 'perspective(760px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-3px)';
+      });
+      el.addEventListener('pointerleave', function(){ el.style.transform = ''; });
+    });
+  }
+})();
+</script>
+</body>
+</html>
