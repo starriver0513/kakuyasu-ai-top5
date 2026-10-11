@@ -113,7 +113,7 @@ img{max-width:100%;height:auto;display:block}
 /* ============ [C:目次] ============ */
 .toc{margin:30px 0 0;padding:24px 26px;border-radius:var(--radius);background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow)}
 .toc h2{margin:0 0 14px;font-family:'M PLUS 1',sans-serif;font-size:17px;color:var(--navy)}
-.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}  /* min()が無いと375px幅で目次がはみ出す（2026-10-11 No.18） */
 .toc li{counter-increment:toc}
 .toc a{display:flex;gap:10px;align-items:baseline;padding:8px 10px;border-radius:10px;color:var(--ink-soft)!important;
   font-weight:700;font-size:14.5px;text-decoration:none;transition:background .2s ease,color .2s ease}
@@ -185,13 +185,16 @@ img{max-width:100%;height:auto;display:block}
   box-shadow:0 16px 38px rgba(4,20,54,.32);overflow:hidden}
 .prompt-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;
   background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.09)}
-.prompt-head b{color:#cfe4ff;font-size:12.5px;font-weight:800;letter-spacing:.04em}
-.copy{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:0;border-radius:9px;cursor:pointer;
+.prompt-head b{color:#cfe4ff;font-size:12.5px;font-weight:800;letter-spacing:.04em;min-width:0}
+.copy{flex-shrink:0;white-space:nowrap;  /* 見出しが長いとスマホでボタンが潰れて「コ/ピ/ー」と縦に割れる（2026-10-11 No.18） */
+  display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:0;border-radius:9px;cursor:pointer;
   background:var(--blue);color:#fff;font-size:12px;font-weight:800;font-family:inherit;transition:background .2s ease,transform .2s ease}
 .copy:hover{transform:translateY(-1px)}
 .copy.done{background:var(--ok)}
 .prompt pre{margin:0;padding:18px 18px 20px;overflow-x:auto;color:#e6f0ff;font-size:13.5px;line-height:1.85;
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Noto Sans JP',monospace;white-space:pre-wrap;word-break:break-word}
+/* 設定ファイル・コマンドは折り返さない（折り返すと字下げが崩れて形が読めない）。枠の中だけ横スクロール（2026-10-11 No.18） */
+.prompt.code pre{white-space:pre;word-break:normal;overflow-wrap:normal;font-size:12.5px;-webkit-overflow-scrolling:touch}
 
 /* ============ [C:画像] 生成画像・スクショを本文に挟む ============ */
 .figure{margin:22px 0;border-radius:var(--radius-sm);overflow:hidden;background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow)}
@@ -260,6 +263,8 @@ tbody tr:last-child td{border-bottom:0}
 /* インラインのコード（設定の名前・コマンド） */
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em;background:var(--blue-soft);color:var(--navy);padding:1px 6px;border-radius:6px;word-break:break-all}
 td code{font-size:.85em}
+details.note summary{cursor:pointer;font-weight:800;color:var(--navy)}
+details.note p{margin:10px 0 0}
 </style>
 </head>
 <body>
@@ -286,7 +291,7 @@ td code{font-size:.85em}
   <header class="hero" id="hero">
     <div class="hero-glow" id="glow"></div>
     <div class="hero-inner">
-      <span class="badge"><span class="dot"></span>保存版資料｜格安AI 5つの始め方と料金</span>
+      <span class="badge"><span class="dot"></span>保存版資料｜格安AI TOP5</span>
       <h1>1000円でClaude並の性能<br><span class="grad">格安AI TOP5の始め方と料金</span></h1>
       <p class="lead">保存版資料のお受け取り、ありがとうございます。この資料では、内容のまとめと、実際に手を動かすための手順をまとめています。5つのAIの始め方、料金の早見表、Claude CodeやCodexにつなぐ手順、格安AIに入れてはいけない情報のチェックリストを、上から順に進めれば使い始められる形にしました。</p>
 
@@ -315,8 +320,8 @@ td code{font-size:.85em}
       <li><a href="#s5">第2位 Kimi：調べものからスライド作りまで任せる</a></li>
       <li><a href="#s6">第1位 Qwen：日本語の文章を安く書いてもらう</a></li>
       <li><a href="#s7">格安AIに入れてはいけない情報のチェックリスト</a></li>
-      <li><a href="#s8">Claude Codeにつなぐ手順（4社分）</a></li>
-      <li><a href="#s9">Codexにつなぐ手順（4社分）</a></li>
+      <li><a href="#s8">Claude Codeにつなぐ手順（デスクトップアプリ）</a></li>
+      <li><a href="#s9">Codexにつなぐ手順（デスクトップアプリ）</a></li>
     </ol>
   </nav>
 
@@ -780,68 +785,181 @@ Xポストを50個作成してください</pre>
   <!-- ============ STEP 08 Claude Code ============ -->
   <section class="sec" id="s8">
     <p class="sec-label rv">STEP 08</p>
-    <h2 class="sec-title rv">Claude Codeにつなぐ手順（4社分）</h2>
+    <h2 class="sec-title rv">Claude Codeにつなぐ手順（デスクトップアプリ）</h2>
     <p class="sec-lead rv">格安AIのサイトでAPIキーという鍵を作り、Claude Codeの設定に、その会社の接続先と一緒に入れるだけです。</p>
 
     <div class="card rv">
-      <p>Claude Code（パソコンの上でAIに作業をさせるためのツール）は、中で動くAIを格安AIに替えられます。つないでいる間は、Claudeのプランの上限はかからずに、格安AIの料金で作業を続けられます。Kimi・DeepSeek・GLM・Qwenの4つは、その手順を公式に出しています。</p>
+      <p>Claude Code（パソコンの上でAIに作業をさせるためのツール）は、中で動くAIを格安AIに替えられます。つないでいる間は、Claudeのプランの上限はかからずに、格安AIの料金で作業を続けられます。この章は、Claudeのデスクトップアプリ（Codeタブ）で使う前提で説明します。</p>
 
       <h3>先に知っておくこと</h3>
       <ul class="check">
-        <li><b>ターミナル（文字を打ってパソコンに指示を出す画面）版のClaude Code（またはVS Codeの拡張機能）で使います。</b>Claude Codeのデスクトップアプリは、この設定を読みません</li>
-        <li><b>Claude Codeを作っているAnthropicは、Claude以外のAIにつなぐ使い方を公式にはサポートしていません。</b>動くかどうかは各社の対応次第です</li>
-        <li><b>料金は、格安AIの会社に払います。</b>つないでいる間はClaudeのプランの上限は使われず、そのAPIキーの持ち主に使った分の料金がかかります</li>
-        <li><b>接続先（ANTHROPIC_BASE_URL）と鍵（APIキー）は、必ずセットで設定します。</b>接続先だけだと、今までのClaudeのログインが使われたままになります</li>
-        <li><b>つないでいる間は、スマホから操作するリモートコントロールが使えなくなります</b></li>
+        <li><b>デスクトップアプリは、アプリの中の設定画面で接続先を変えます。</b>「サードパーティ推論（Third-Party Inference）」という、いつもとは別のモードで動きます</li>
+        <li><b>このモードでは、Anthropicのアカウントにサインインしません。</b>ClaudeのプランのPro・Maxは使われず、つないだ会社に、使った分だけ料金を払います</li>
+        <li><b>Claude Codeを作っているAnthropicは、Claude以外のAIにつなぐ使い方を公式にはサポートしていません。</b>動くかどうかは、各社の対応次第です</li>
+        <li><b>このモードの間は、スマホからの操作（リモートコントロール）、クラウドでの作業、音声入力などが使えません。</b>会話の履歴も、いつものモードとは別の場所に保存されます</li>
+        <li><b>いつでも元に戻せます。</b>起動した時のサインイン画面で、Anthropicのサインインを選べば、いつものClaudeに戻ります</li>
       </ul>
 
-      <h3>4社の違い</h3>
+      <h3>4社の対応状況（デスクトップアプリ）</h3>
       <div class="table-scroll">
         <table>
-          <thead><tr><th>AI</th><th>使う料金</th><th>鍵を作る場所</th><th>接続先</th></tr></thead>
+          <thead><tr><th>AI</th><th>デスクトップアプリへのつなぎ方</th><th>この資料での案内</th></tr></thead>
           <tbody>
-            <tr><td>Kimi（API）</td><td>使った分だけ（最低1ドルのチャージ）</td><td>platform.kimi.ai の API Keys</td><td><code>https://api.moonshot.ai/anthropic</code></td></tr>
-            <tr><td>Kimi Code</td><td>Kimiの月額プラン（Plus／Moderato以上）</td><td>Kimi Code Console</td><td><code>https://api.kimi.ai/coding/</code></td></tr>
-            <tr><td>DeepSeek</td><td>使った分だけ（月額なし）</td><td>platform.deepseek.com の API Keys</td><td><code>https://api.deepseek.com/anthropic</code></td></tr>
-            <tr><td>GLM</td><td>GLM Coding Plan（月18ドル〜）</td><td>z.ai の API Keys</td><td><code>https://api.z.ai/api/anthropic</code></td></tr>
-            <tr><td>Qwen</td><td>Token Plan（月8ドル〜）</td><td>QwenCloud の API Keys</td><td><code>https://token-plan.maas.qwencloudapi.com/apps/anthropic</code></td></tr>
+            <tr><td><b>DeepSeek</b></td><td>公式に案内あり（開発者モードで接続先と鍵を変える）</td><td>この下の手順</td></tr>
+            <tr><td><b>Qwen</b></td><td>公式は「CC Switch」（コミュニティ製の無料ツール）を使う方法を案内</td><td>この章の後半</td></tr>
+            <tr><td><b>Kimi</b></td><td>公式の案内なし</td><td>VS Code版・ターミナル版で使う（この章の最後）</td></tr>
+            <tr><td><b>GLM</b></td><td>公式の案内なし</td><td>VS Code版・ターミナル版で使う（この章の最後）</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3>共通の流れ</h3>
+      <h3>DeepSeekをデスクトップアプリにつなぐ</h3>
+      <div class="video">
+        <video src="assets/claude-desktop-deepseek.mp4" controls preload="metadata" playsinline></video>
+      </div>
+      <p class="video-note">▶ 上の解説動画（約2分30秒）で、Claudeのデスクトップアプリで動くAIを、DeepSeekに替える手順を通しで見られます。画面に出てくる Developer Mode（開発者モード）や Gateway（自分で決めた接続先につなぐ方式）は、アプリの表示が英語のままの名前です。</p>
+      <details class="note"><summary>ナレーション全文を読む</summary>
+        <p>Claudeのデスクトップアプリで動くAIを、格安AIのDeepSeekに替える手順です。DeepSeekは、デスクトップアプリでのつなぎ方を公式に案内しています。やることは、鍵を作る、設定画面を開く、欄を埋める、の3つです。</p>
+        <p>先に、このモードの特徴を押さえておきます。Anthropicのアカウントにはサインインしないので、ClaudeのプランのPro・Maxは使われず、DeepSeekに使った分だけ払います。スマホからの操作や音声入力は使えませんが、いつでも元に戻せます。</p>
+        <p>まず、DeepSeekのサイトで鍵を作ります。platform.deepseek.comのAPI Keysで鍵を作って、すぐにコピーして保存します。Top Upのページで、少しチャージしておきます。</p>
+        <p>次に、Claudeのデスクトップアプリで、開発者モードをオンにします。Help、Troubleshooting、Enable Developer Modeの順に選ぶと、アプリが再起動して、Developerというメニューが出てきます。Windowsは、サインイン画面の左上のメニューから同じ項目を選びます。</p>
+        <p>出てきたDeveloperのメニューから、Configure Third-Party Inferenceを開きます。設定画面の左側にあるConnectionから埋めていきます。</p>
+        <p>Inference providerはGatewayを選びます。Gateway base URLには、DeepSeekの接続先を入れて、Gateway API keyには、さっき作った鍵を貼ります。Credential kindと、Gateway auth schemeは、最初の設定のままで大丈夫です。</p>
+        <p>Modelsの一覧には、claude-sonnet-5-5と1つ入れます。DeepSeekは、claude-sonnetで始まる名前を、安いdeepseek-flashに読み替える仕組みです。入れたら、Apply Changes、Save and Restartの順に押します。</p>
+        <p>再起動したら、サインイン画面で、Anthropicのアカウントではなく、いま設定したモードで始める方を選びます。Codeタブで話しかけて、返事が返ってくれば完了です。Gateway was unreachableと出た時は、接続先のURLと鍵を見直してください。</p>
+        <p>いつものClaudeに戻したい時は、サインイン画面で、Anthropicのサインインを選ぶだけです。DeepSeekの設定は残るので、また切り替えて使えます。</p>
+      </details>
       <div class="step">
         <div class="step-no">1</div>
         <div class="step-body">
-          <h4>つなぎたい会社のサイトで、APIキーを作る</h4>
-          <p>APIキーは、そのサービスを使うための鍵です。作った時に一度しか全部表示されないものが多いので、すぐにコピーして安全な場所に保存します。人に見せたり、SNSに貼ったりしないでください。</p>
+          <h4>DeepSeekのAPIキーを作って、チャージする</h4>
+          <p>platform.deepseek.com の API Keys で鍵を作り、すぐにコピーして安全な場所に保存します。人に見せたり、SNSに貼ったりしないでください。Top Up のページで、少しチャージしておきます（PayPal・カード・Alipay・WeChat Pay）。</p>
+          <a class="toollink" href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek API Keys</a>
+          <a class="toollink" href="https://platform.deepseek.com/top_up" target="_blank" rel="noopener">DeepSeek Top Up</a>
         </div>
       </div>
       <div class="step">
         <div class="step-no">2</div>
         <div class="step-body">
-          <h4>Claude Codeの設定ファイル（settings.json）に、各社の設定を書く</h4>
-          <p>設定ファイルは、ホームフォルダ（自分のユーザー名のフォルダ）の中にある「.claude」というフォルダの settings.json です。Windowsでは <code>%USERPROFILE%\.claude\settings.json</code> です。「.」で始まるフォルダは、ふだんは隠れていて見えません。自分で開いて書いてもいいですし、下のプロンプトでClaude Codeに書いてもらうこともできます。鍵はプロジェクトのフォルダの中の設定ファイルには書かないでください（共有した時に鍵が漏れます）。</p>
+          <h4>開発者モードをオンにする</h4>
+          <p>Macは画面上のメニューバー、Windowsはサインイン画面の左上にある ☰ のメニューから、<b>Help → Troubleshooting → Enable Developer Mode</b> を選びます。アプリが再起動して、<b>Developer</b> というメニューが出てきます。</p>
         </div>
       </div>
       <div class="step">
         <div class="step-no">3</div>
         <div class="step-body">
-          <h4>Claude Codeを終了して、起動し直す</h4>
-          <p>設定は起動した時に読み込まれます。新しいターミナルで <code>claude</code> と打って起動します。最初に「このAPIキーを使いますか」と聞かれたら、許可します。</p>
+          <h4>Developer → Configure Third-Party Inference… を開く</h4>
+          <p>設定の画面が開きます。左側の <b>Connection</b> から埋めていきます。</p>
         </div>
       </div>
       <div class="step">
         <div class="step-no">4</div>
         <div class="step-body">
-          <h4><code>/status</code> で、つながっているか確かめる</h4>
-          <p>Claude Codeの中で <code>/status</code> と打ちます。「Anthropic base URL」の行に、つないだ会社の接続先が出ていれば成功です。</p>
+          <h4>Connection の欄を埋める</h4>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>欄の名前</th><th>入れるもの</th></tr></thead>
+              <tbody>
+                <tr><td>Inference provider</td><td><b>Gateway</b> を選ぶ</td></tr>
+                <tr><td>Gateway base URL</td><td><code>https://api.deepseek.com/anthropic</code></td></tr>
+                <tr><td>Gateway API key</td><td>手順1で作ったDeepSeekのAPIキー</td></tr>
+                <tr><td>Credential kind</td><td><b>Static API key</b>（最初からこの設定）</td></tr>
+                <tr><td>Gateway auth scheme</td><td><b>Bearer</b>（最初からこの設定）</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">5</div>
+        <div class="step-body">
+          <h4>Models に、モデルの名前を1つ入れる</h4>
+          <p><b>Models</b> の一覧に <code>claude-sonnet-5-5</code> を1つ追加します。DeepSeekは、<code>claude-sonnet</code> で始まる名前を、安い <code>deepseek-flash</code> に読み替える仕組みになっています（<code>claude-opus</code> で始まる名前は、少し高い <code>deepseek-v4-pro</code> に読み替えられます）。一覧の一番上が、最初に選ばれるモデルになります。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">6</div>
+        <div class="step-body">
+          <h4>Apply Changes → Save &amp; Restart を押す</h4>
+          <p>設定がこのパソコンだけに保存されて、アプリが再起動します。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">7</div>
+        <div class="step-body">
+          <h4>サインイン画面で、設定した接続先で始める方を選ぶ</h4>
+          <p>Anthropicのアカウントのサインインではなく、いま設定したモードで始める方を選びます。Codeタブで新しいセッション（会話のまとまり）を開いて話しかけ、返事が返ってくれば完了です。「Gateway was unreachable」と出た時は、接続先のURLと鍵を見直してください。</p>
+        </div>
+      </div>
+      <div class="note"><b>出どころ：</b>「デスクトップアプリの開発者モードで、接続先と鍵を変えればDeepSeekにつながる」「Claudeのモデル名をDeepSeekのモデルに読み替える」のはDeepSeek公式の案内です。画面の場所と欄の名前はAnthropic公式の説明に合わせています。画面は英語表示のままの場合があります。</div>
+      <a class="toollink" href="https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code" target="_blank" rel="noopener">DeepSeek 公式：Claude Code・Claude Desktopで使う</a>
+      <a class="toollink" href="https://claude.com/docs/third-party/claude-desktop/in-app-configuration" target="_blank" rel="noopener">Anthropic 公式：設定画面の開き方</a>
+      <a class="toollink" href="https://claude.com/docs/third-party/claude-desktop/gateway" target="_blank" rel="noopener">Anthropic 公式：Gateway の欄の説明</a>
+
+      <h3>いつものClaudeに戻す方法（デスクトップアプリ）</h3>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>サインイン画面で、Anthropicのサインインを選ぶ</h4>
+          <p>これだけで、いつものClaudeに戻ります。DeepSeekの設定は残るので、また切り替えて使えます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>設定ごと消したい時は、configLibrary フォルダを消す</h4>
+          <p>Macは <code>~/Library/Application Support/Claude-3p/configLibrary/</code>、Windowsは <code>%LOCALAPPDATA%\Claude-3p\configLibrary\</code> です。開発者モードを切りたい時は、<b>Developer → Open Developer Config File</b> で開いたファイルの <code>"allowDevTools": true</code> を <code>false</code> に変えて保存し、アプリを再起動します。</p>
+          <a class="toollink" href="https://claude.com/docs/third-party/claude-desktop/installation" target="_blank" rel="noopener">Anthropic 公式：インストールと設定</a>
+        </div>
+      </div>
+
+      <h3>Qwen：CC Switchを使ってつなぐ（Qwen公式の案内）</h3>
+      <p>Qwenの公式ページは、デスクトップアプリにつなぐ方法として、CC Switch（コミュニティが作っている無料のアプリ）を使う手順を案内しています。Anthropic や Qwen が作ったツールではない点に注意してください。</p>
+      <ul class="check">
+        <li>CC Switch の <b>Claude Desktop</b> の画面で、Qwenの設定（プロバイダー）を追加する</li>
+        <li><b>Settings → Routing → Local Routing</b> で「Show Routing Toggle on Main Page」をオンにし、<b>Claude Desktop local routing</b> をオンにする</li>
+        <li>Qwenのモデル名はデスクトップアプリが読めない名前なので、<b>Needs model mapping</b> をオンにして、Sonnet・Opus・Haiku に Qwen のモデルを割り当てる</li>
+        <li>CC Switch を起動したまま、デスクトップアプリを完全に終了して開き直し、モデルの一覧から選ぶ</li>
+      </ul>
+      <div class="note warn"><b>Qwenの注意：</b>この方法では、デスクトップアプリにQwenのAPIキーを直接入れません（CC Switch が代わりに受け渡します）。細かい手順は変わることがあるので、必ずQwen公式ページを見ながら進めてください。</div>
+      <a class="toollink" href="https://docs.qwencloud.com/developer-guides/clients-and-developer-tools/claude-code" target="_blank" rel="noopener">QwenCloud 公式：Claude Codeで使う（CC Switchの手順）</a>
+      <a class="toollink" href="https://github.com/farion1231/cc-switch" target="_blank" rel="noopener">CC Switch（GitHub）</a>
+
+      <h3>Kimi・GLMは、VS Code版かターミナル版で使う</h3>
+      <p>KimiとGLMは、デスクトップアプリへのつなぎ方を公式に出していません。各社が公式に手順を出しているのは、VS Code（プログラムを書くための無料のアプリ）に入れる「Claude Code」拡張機能と、ターミナル（文字を打ってパソコンに指示を出す画面）版のClaude Codeです。DeepSeekとQwenも、こちらの方法で使えます。</p>
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>つなぎたい会社のサイトで、APIキーを作る</h4>
+          <p>作った時に一度しか全部表示されないものが多いので、すぐにコピーして安全な場所に保存します。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>ターミナル版：設定ファイル（settings.json）に各社の設定を書く</h4>
+          <p>設定ファイルは、ホームフォルダ（自分のユーザー名のフォルダ）の中にある「.claude」というフォルダの settings.json です。Windowsでは <code>%USERPROFILE%\.claude\settings.json</code> です。「.」で始まるフォルダは、ふだんは隠れていて見えません。下のプロンプトで、デスクトップアプリのClaude Code（いつものClaudeのまま）に書いてもらうこともできます。鍵はプロジェクトのフォルダの中の設定ファイルには書かないでください（共有した時に鍵が漏れます）。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>VS Code版：VS Codeのユーザー設定に書く</h4>
+          <p>VS Codeでは、コマンドパレットの <b>Preferences: Open User Settings (JSON)</b> を開き、<code>claudeCode.environmentVariables</code> に各社の設定（下の "env" の中身）を書きます。設定画面で「Claude Code login」と検索して <b>Disable Login Prompt</b> にチェックを入れると、Claudeのログイン画面が出なくなります。</p>
+          <a class="toollink" href="https://code.claude.com/docs/en/vs-code" target="_blank" rel="noopener">Anthropic 公式：VS Code拡張</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">4</div>
+        <div class="step-body">
+          <h4>起動し直して、<code>/status</code> で確かめる</h4>
+          <p>Claude Codeを終了して起動し直し、<code>/status</code> と打ちます。「Anthropic base URL」の行に、つないだ会社の接続先が出ていれば成功です。最初に「このAPIキーを使いますか」と聞かれたら、許可します。</p>
         </div>
       </div>
 
       <div class="prompt">
         <div class="prompt-head">
-          <b>Claude Codeに設定を書いてもらうプロンプト（つなぐ前の、いつものClaude Codeで使う）</b>
+          <b>Claude Codeに設定を書いてもらうプロンプト（いつものClaudeのままで使う）</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>~/.claude/settings.json に、格安AIにつなぐ設定を追加してください。
@@ -852,12 +970,13 @@ Xポストを50個作成してください</pre>
 
 （ここに、下の各社の設定をコピーして貼る）</pre>
       </div>
+      <div class="note"><b>ポイント：</b>この設定ファイルは、ターミナル版とVS Code版のClaude Codeが読むものです。デスクトップアプリは読まないので、デスクトップアプリのClaudeに頼んで書いてもらっても、デスクトップアプリ自体はいつものClaudeのまま動きます。</div>
 
-      <h3>Kimi（使った分だけ払うAPI）</h3>
+      <h4>Kimi（使った分だけ払うAPI）</h4>
       <p>platform.kimi.ai にGoogleかメールでサインインして、API Keys で鍵を作ります。使い始めるには最低1ドルのチャージが必要です。公式に書かれているチャージ方法は WeChat Pay と Alipay です。</p>
-      <div class="prompt">
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>Kimi（API）の settings.json（公式の例そのまま）</b>
+          <b>Kimi（API）の settings.json</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>{
@@ -879,11 +998,11 @@ Xポストを50個作成してください</pre>
       <a class="toollink" href="https://platform.kimi.ai/console/api-keys" target="_blank" rel="noopener">Kimi API Keys</a>
       <a class="toollink" href="https://platform.kimi.ai/docs/guide/claude-code-kimi" target="_blank" rel="noopener">Kimi 公式：Claude Codeで使う</a>
 
-      <h3>Kimi Code（月額プランで使う）</h3>
-      <p>Kimiの月額プラン（コーディング用の枠がある、Plus／Moderato以上）に入っている場合は、こちらを使います。Kimi Code Console で「Create API Key」から鍵を作ります。APIの鍵とは別物なので、混ぜないでください。公式ページには、設定の前に実行する準備のスクリプトも載っているので、先にそちらを済ませます。</p>
-      <div class="prompt">
+      <h4>Kimi Code（Kimiの月額プランで使う）</h4>
+      <p>Kimiの月額プラン（コーディング用の枠がある、Plus／Moderato以上）に入っている場合は、こちらを使います。Kimi Code Console で「Create API Key」から鍵を作ります。APIの鍵とは別物なので、混ぜないでください。公式ページには、設定の前に実行する準備のスクリプトと、VS Code版での最初の確認手順（Run claude in terminal）も載っているので、先にそちらを済ませます。</p>
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>Kimi Code の settings.json（公式の例そのまま）</b>
+          <b>Kimi Code の settings.json</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>{
@@ -905,55 +1024,11 @@ Xポストを50個作成してください</pre>
       <a class="toollink" href="https://www.kimi.com/code/console" target="_blank" rel="noopener">Kimi Code Console</a>
       <a class="toollink" href="https://www.kimi.com/code/docs/en/third-party-tools/claude-code.html" target="_blank" rel="noopener">Kimi Code 公式：Claude Codeで使う</a>
 
-      <h3>DeepSeek</h3>
-      <p>platform.deepseek.com の API Keys で鍵を作り、Top Up のページでチャージします（PayPal・カード・Alipay・WeChat Pay）。月額プランはありません。公式の手順は、ターミナルで次の行を打ってから <code>claude</code> を起動する形です。</p>
-      <div class="prompt">
+      <h4>GLM（GLM Coding Plan）</h4>
+      <p>GLMの公式手順は、月額のGLM Coding Plan に入っている前提です。z.ai/subscribe でプランに入り、API Keys のページで鍵を作ります。ターミナル版は、案内に答えていくだけの自動ツール（<code>npx @z_ai/coding-helper</code>、Node.js 18以上が必要）でも設定できます。VS Code版は、ターミナル版の設定を済ませてから使う、と公式に書かれています。</p>
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>DeepSeek：Mac（ターミナル）で打つ設定（公式の例そのまま）</b>
-          <button class="copy" type="button">コピー</button>
-        </div>
-        <pre>export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
-export ANTHROPIC_AUTH_TOKEN=&lt;your DeepSeek API Key&gt;
-export ANTHROPIC_MODEL=deepseek-flash[1m]
-export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-flash[1m]
-export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
-export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
-export CLAUDE_CODE_EFFORT_LEVEL=max
-export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432</pre>
-      </div>
-      <div class="prompt">
-        <div class="prompt-head">
-          <b>DeepSeek：Windowsの PowerShell（Windowsで文字の指示を打つ画面）で打つ設定（公式の例そのまま）</b>
-          <button class="copy" type="button">コピー</button>
-        </div>
-        <pre>$env:ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
-$env:ANTHROPIC_AUTH_TOKEN="&lt;your DeepSeek API Key&gt;"
-$env:ANTHROPIC_MODEL="deepseek-flash[1m]"
-$env:ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-flash[1m]"
-$env:ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-flash[1m]"
-$env:ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-flash"
-$env:CLAUDE_CODE_SUBAGENT_MODEL="deepseek-flash"
-$env:CLAUDE_CODE_EFFORT_LEVEL="max"
-$env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"</pre>
-      </div>
-      <div class="note"><b>ポイント：</b><code>&lt;your DeepSeek API Key&gt;</code> の所を、自分の鍵に置き換えて打ちます。このやり方は、そのターミナルを開いている間だけ有効です。毎回使うなら、同じ項目を settings.json の "env" に書く（上のプロンプトでClaude Codeに頼む）と、閉じても残ります。</div>
-      <a class="toollink" href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek API Keys</a>
-      <a class="toollink" href="https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code" target="_blank" rel="noopener">DeepSeek 公式：Claude Codeで使う</a>
-
-      <h3>GLM（GLM Coding Plan）</h3>
-      <p>GLMの公式手順は、月額のGLM Coding Plan に入っている前提です。z.ai/subscribe でプランを選んで入り、API Keys のページで鍵を作ります。設定は、案内に答えていくだけの自動ツールが一番かんたんです（Node.js 18以上が必要）。</p>
-      <div class="prompt">
-        <div class="prompt-head">
-          <b>GLM：自動で設定するツール（ターミナルで打つ）</b>
-          <button class="copy" type="button">コピー</button>
-        </div>
-        <pre>npx @z_ai/coding-helper</pre>
-      </div>
-      <p>手で書く場合は、settings.json に次の設定を入れます。</p>
-      <div class="prompt">
-        <div class="prompt-head">
-          <b>GLM の settings.json（公式の例そのまま）</b>
+          <b>GLM の settings.json</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>{
@@ -973,12 +1048,32 @@ $env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"</pre>
       <a class="toollink" href="https://z.ai/subscribe" target="_blank" rel="noopener">GLM Coding Plan</a>
       <a class="toollink" href="https://z.ai/manage-apikey/apikey-list" target="_blank" rel="noopener">Z.ai API Keys</a>
       <a class="toollink" href="https://docs.z.ai/devpack/tool/claude" target="_blank" rel="noopener">Z.ai 公式：Claude Codeで使う</a>
+      <a class="toollink" href="https://docs.z.ai/devpack/tool/claude-for-ide" target="_blank" rel="noopener">Z.ai 公式：VS Code・JetBrainsで使う</a>
 
-      <h3>Qwen（Token Plan）</h3>
-      <p>QwenCloud にGitHubかメールでサインインし、Token Plan に入ってから、Token Plan用の鍵（<code>sk-sp-</code> で始まる）を作ります。使った分だけ払う形の鍵とは別物です。先に <code>~/.claude.json</code> に <code>"hasCompletedOnboarding": true</code> を入れておくと、Claudeのログイン確認を飛ばせます。</p>
-      <div class="prompt">
+      <h4>DeepSeek・Qwen（ターミナル版・VS Code版で使う場合）</h4>
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>Qwen（Token Plan）の settings.json（公式の例そのまま）</b>
+          <b>DeepSeek の設定（"env" の中身）</b>
+          <button class="copy" type="button">コピー</button>
+        </div>
+        <pre>{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "&lt;your DeepSeek API Key&gt;",
+    "ANTHROPIC_MODEL": "deepseek-flash[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-flash[1m]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-flash[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash",
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "786432"
+  }
+}</pre>
+      </div>
+      <p>DeepSeek公式の手順は、同じ項目をターミナルで <code>export</code> する形です。ここでは、その値を settings.json の書き方に並べ直しています。</p>
+      <div class="prompt code">
+        <div class="prompt-head">
+          <b>Qwen（Token Plan）の settings.json</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>{
@@ -994,88 +1089,107 @@ $env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"</pre>
   }
 }</pre>
       </div>
-      <div class="note warn"><b>Qwenの注意：</b>Token Planは、人がツールの中で対話しながら使うためのプランです。自動で動かす仕組みや、決まった時間に動かす使い方は規約で禁止されています。鍵の種類と接続先が合っていないと、401（invalid_api_key）のエラーになります。</div>
+      <div class="note warn"><b>Qwenの注意：</b>Token Plan用の鍵（<code>sk-sp-</code> で始まる）を使います。先に <code>~/.claude.json</code> に <code>"hasCompletedOnboarding": true</code> を入れておくと、Claudeのログイン確認を飛ばせます。Token Planは、人がツールの中で対話しながら使うためのプランで、自動で動かす使い方は規約で禁止されています。</div>
       <a class="toollink" href="https://home.qwencloud.com/api-keys" target="_blank" rel="noopener">QwenCloud API Keys</a>
-      <a class="toollink" href="https://docs.qwencloud.com/developer-guides/clients-and-developer-tools/claude-code" target="_blank" rel="noopener">QwenCloud 公式：Claude Codeで使う</a>
 
-      <h3>普通のClaudeに戻す方法</h3>
-      <div class="step">
-        <div class="step-no">1</div>
-        <div class="step-body">
-          <h4>settings.json の "env" から、追加した行を消す</h4>
-          <p>上のプロンプトで作ったバックアップ（settings.backup.json）に戻すのが一番確実です。Claudeのログインは消えずに残っているので、設定を外せば元に戻ります。</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-no">2</div>
-        <div class="step-body">
-          <h4>ターミナルで打った設定（export）は、ターミナルを閉じれば消える</h4>
-          <p>Kimi Codeのように ANTHROPIC_API_KEY を使った場合は、<code>unset ANTHROPIC_API_KEY</code> で外せます。</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-no">3</div>
-        <div class="step-body">
-          <h4>Claude Codeを起動し直して、<code>/status</code> で確かめる</h4>
-          <p>「Anthropic base URL」の行が消えていれば、元のClaudeに戻っています。</p>
-        </div>
-      </div>
-      <a class="toollink" href="https://code.claude.com/docs/en/llm-gateway-connect" target="_blank" rel="noopener">Claude Code 公式ドキュメント</a>
+      <h4>ターミナル版・VS Code版を元に戻す方法</h4>
+      <ul class="check">
+        <li>settings.json の "env" から追加した行を消す（バックアップの settings.backup.json に戻すのが一番確実）。Claudeのログインは消えずに残っているので、設定を外せば元に戻ります</li>
+        <li>VS Code版は、ユーザー設定の <code>claudeCode.environmentVariables</code> から消す</li>
+        <li>Kimi Codeのように ANTHROPIC_API_KEY をターミナルで設定した場合は、<code>unset ANTHROPIC_API_KEY</code> で外せる</li>
+        <li>起動し直して <code>/status</code> を見て、「Anthropic base URL」の行が消えていれば元のClaudeに戻っています</li>
+      </ul>
+      <a class="toollink" href="https://code.claude.com/docs/en/llm-gateway-connect" target="_blank" rel="noopener">Anthropic 公式：Claude Codeを接続先につなぐ</a>
     </div>
   </section>
 
   <!-- ============ STEP 09 Codex ============ -->
   <section class="sec" id="s9">
     <p class="sec-label rv">STEP 09</p>
-    <h2 class="sec-title rv">Codexにつなぐ手順（4社分）</h2>
-    <p class="sec-lead rv">Codexも、設定ファイル（config.toml）に格安AIの接続先と鍵を書けば、中で動くAIを替えられます。</p>
+    <h2 class="sec-title rv">Codexにつなぐ手順（デスクトップアプリ）</h2>
+    <p class="sec-lead rv">ChatGPTのデスクトップアプリのCodexは、設定ファイル（config.toml）に格安AIの接続先と鍵を書けば、中で動くAIを替えられます。</p>
 
     <div class="card rv">
       <h3>先に知っておくこと</h3>
       <ul class="check">
-        <li><b>設定ファイルの場所</b>は、Macが <code>~/.codex/config.toml</code>、Windowsが <code>%USERPROFILE%\.codex\config.toml</code> です。ターミナル版のCodex、ChatGPTのデスクトップアプリ、VS Codeの拡張機能は、同じファイルを読みます</li>
-        <li><b><code>model</code> や <code>model_provider</code> の行は、<code>[ ]</code> で始まる行より上に書きます。</b>下に書くと読み込まれません</li>
-        <li><b>書き換えたら、Codexを終了して起動し直します。</b>設定は起動した時にだけ読み込まれます</li>
-        <li><b>ターミナルで設定した環境変数（パソコンに覚えさせておく設定の値）は、デスクトップアプリには届かないことがあります。</b>その場合は各社の公式ページの方法に従います</li>
+        <li><b>Codexは、ChatGPTのデスクトップアプリの中にあります。</b>左上のメニューで Codex に切り替えて使います</li>
+        <li><b>設定ファイルは、アプリの中から開けます。</b>Settings（Macは ⌘+,、Windowsは Ctrl+,）→ <b>Configuration</b> → <b>Open config.toml</b> です。ファイルの場所は、Macが <code>~/.codex/config.toml</code>、Windowsが <code>%USERPROFILE%\.codex\config.toml</code> です</li>
+        <li><b>書き換えたら保存して、アプリを完全に終了します</b>（Macは ⌘+Q、Windowsは Ctrl+Q）。開き直して、<b>新しいチャット</b>で確かめます。ウィンドウを閉じるだけでは、設定は読み直されません</li>
+        <li><b><code>model</code> や <code>model_provider</code> などの行は、<code>[ ]</code> で始まる行より上に書きます。</b>同じ見出し（例：<code>[desktop]</code>）を2つ作るとファイルが壊れます。アプリが最初から書いている部分は消さないでください</li>
+        <li><b>書き換える前に、ファイルの中身を全部コピーして、別の場所に保存しておきます。</b>うまくいかない時に元に戻せます</li>
       </ul>
+      <div class="note"><b>アプリの中から開けない時：</b>Macは、Finderで「移動」→「フォルダへ移動」（Shift＋Command＋G）を開き、<code>~/.codex/</code> と入れると開けます。テキストエディットで書き換える時は、「"」が別の記号に自動で変わらないように、スマート引用符をオフにしてください（変わるとファイルが壊れます）。Windowsは、エクスプローラーの「表示」→「表示」で「隠しファイル」と「ファイル名拡張子（ファイル名の最後の .toml などの部分）」にチェックを入れてから、<code>C:\Users\（ユーザー名）\.codex</code> を開きます。</div>
+      <a class="toollink" href="https://learn.chatgpt.com/guides/best-practices" target="_blank" rel="noopener">OpenAI 公式：config.toml の開き方</a>
+      <a class="toollink" href="https://support.apple.com/guide/mac-help/go-directly-to-a-specific-folder-on-mac-mchlp1236/mac" target="_blank" rel="noopener">Apple 公式：フォルダへ移動</a>
+      <a class="toollink" href="https://support.microsoft.com/en-us/windows/view-hidden-files-and-folders-in-windows-97fbc472-c603-9d90-91d0-1166d1d9f4b5" target="_blank" rel="noopener">Microsoft 公式：隠しファイルを表示する</a>
 
-      <h3>4社の違い</h3>
+      <h3>4社の対応状況（デスクトップアプリ）</h3>
       <div class="table-scroll">
         <table>
-          <thead><tr><th>AI</th><th>一番かんたんな方法</th><th>鍵の置き場所</th><th>追加のファイル</th></tr></thead>
+          <thead><tr><th>AI</th><th>デスクトップアプリでのつなぎ方</th><th>鍵の置き場所</th></tr></thead>
           <tbody>
-            <tr><td>DeepSeek</td><td>公式の自動設定スクリプト</td><td>スクリプトが聞いてくる</td><td>スクリプトが作る</td></tr>
-            <tr><td>GLM（Coding Plan）</td><td>自動設定ツール <code>npx @z_ai/coding-helper</code></td><td>config.toml に書く</td><td><code>~/.codex/models.json</code></td></tr>
-            <tr><td>Kimi（API）</td><td>config.toml に書く</td><td>環境変数 KIMI_API_KEY</td><td>なし</td></tr>
-            <tr><td>Qwen（Token Plan）</td><td>config.toml に書く</td><td>環境変数 OPENAI_API_KEY</td><td><code>~/.codex/model-catalog.local.json</code>（公式ページからコピー）</td></tr>
+            <tr><td><b>DeepSeek</b></td><td>公式の自動設定スクリプト（アプリだけ入っていれば動く）</td><td>スクリプトが設定ファイルに書く</td></tr>
+            <tr><td><b>GLM</b></td><td>config.toml に書く（GLM Coding Plan）</td><td>設定ファイルに直接書く</td></tr>
+            <tr><td><b>Kimi</b></td><td>config.toml に書く。月額のKimi Codeなら、公式にデスクトップアプリの手順あり</td><td>環境変数（パソコンに覚えさせておく設定の値）。アプリに届かないことがある</td></tr>
+            <tr><td><b>Qwen</b></td><td>デスクトップアプリの手順は公式になし</td><td>環境変数（ターミナル版のCodexで使う）</td></tr>
           </tbody>
         </table>
       </div>
+      <p>デスクトップアプリで一番確実なのは、鍵を設定ファイルに書く方式のDeepSeekとGLMです。</p>
 
       <h3>DeepSeek：自動設定スクリプト（おすすめ）</h3>
-      <p>先にCodex（またはChatGPTのデスクトップアプリ）を入れて、一度起動しておきます。そのあと、ターミナルで次の1行を打ちます。メニューで 1 を選ぶと deepseek-flash、2 を選ぶと deepseek-v4-pro が設定されます。最初にAPIキー（<code>sk-</code> で始まる）を聞かれるので、貼り付けます。今の設定は自動でバックアップされます。</p>
-      <div class="prompt">
+      <div class="step">
+        <div class="step-no">1</div>
+        <div class="step-body">
+          <h4>ChatGPTのデスクトップアプリを入れて、一度開いておく</h4>
+          <p>一度開くと、設定ファイルを置くフォルダ（<code>.codex</code>）ができます。ターミナル版のCodexは入っていなくても大丈夫です。</p>
+          <a class="toollink" href="https://learn.chatgpt.com/docs/app" target="_blank" rel="noopener">OpenAI 公式：Codexアプリ</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">2</div>
+        <div class="step-body">
+          <h4>DeepSeekのAPIキーを作って、チャージする</h4>
+          <p>platform.deepseek.com の API Keys で鍵を作り、Top Up でチャージします。</p>
+          <a class="toollink" href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek API Keys</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-no">3</div>
+        <div class="step-body">
+          <h4>下の1行を、ターミナルに貼って実行する</h4>
+          <p>Macは「アプリケーション」→「ユーティリティ」の中の「ターミナル」を、Windowsは PowerShell（Windowsで文字の指示を打つ画面）を開きます。メニューが出たら 1 を選ぶと deepseek-flash、2 を選ぶと deepseek-v4-pro が設定されます。APIキー（<code>sk-</code> で始まる）を聞かれたら貼り付けます。今の設定は自動でバックアップされます。</p>
+        </div>
+      </div>
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>DeepSeek：Mac・Linux（公式）</b>
+          <b>DeepSeek：Macのターミナルに貼る（公式）</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>bash &lt;(curl -fsSL https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.sh)</pre>
       </div>
-      <div class="prompt">
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>DeepSeek：Windows PowerShell（公式）</b>
+          <b>DeepSeek：WindowsのPowerShellに貼る（公式）</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.ps1 | iex</pre>
       </div>
-      <div class="note"><b>ポイント：</b>同じスクリプトでメニューの 9 を選ぶと、DeepSeekの設定を消して元のCodexに戻せます。スクリプトは、公式ページに書かれたこの1行だけを使ってください。</div>
+      <div class="step">
+        <div class="step-no">4</div>
+        <div class="step-body">
+          <h4>アプリを完全に終了して開き直し、新しいチャットで確かめる</h4>
+          <p>モデルの選択欄に「DeepSeek-Flash」か「Custom」と出ていれば、DeepSeekで動いています（どちらが出るかはアプリのバージョンによります）。</p>
+        </div>
+      </div>
+      <div class="note warn"><b>DeepSeekの注意：</b>スクリプトでは、入力した鍵が画面にそのまま表示されます。画面を録画・共有している時は実行しないでください。このスクリプトは、ChatGPTへのログインではなくAPIキーで使う設定にします。切り替えた後に今までの会話が見えなくなりますが、消えたわけではありません（ログインの方式ごとに分けて保存されています）。元に戻す時は、同じ1行を実行してメニューの 9 を選びます。</div>
       <a class="toollink" href="https://api-docs.deepseek.com/quick_start/agent_integrations/codex" target="_blank" rel="noopener">DeepSeek 公式：Codexで使う</a>
 
-      <h3>GLM（GLM Coding Plan）</h3>
-      <p>Claude Codeと同じ自動設定ツール（<code>npx @z_ai/coding-helper</code>）が、Codexの設定もしてくれます。手で書く場合は、まず <code>~/.codex/models.json</code> を作り、そのあと config.toml に次の設定を書きます。<code>&lt;Your API Key&gt;</code> の所を自分の鍵に置き換えます。</p>
-      <div class="prompt">
+      <h3>GLM（GLM Coding Plan）：config.toml に書く</h3>
+      <p>鍵を設定ファイルに直接書く方式なので、デスクトップアプリでもそのまま読まれます。まず <code>~/.codex/models.json</code> を作り、そのあと config.toml に設定を書きます。<code>&lt;Your API Key&gt;</code> の所を自分の鍵に置き換えます。保存したら、アプリを完全に終了して開き直します。</p>
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>GLM：~/.codex/models.json（公式の例そのまま）</b>
+          <b>GLM：~/.codex/models.json</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>{
@@ -1124,9 +1238,9 @@ $env:CLAUDE_CODE_AUTO_COMPACT_WINDOW="786432"</pre>
     ]
 }</pre>
       </div>
-      <div class="prompt">
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>GLM：~/.codex/config.toml（公式の例そのまま）</b>
+          <b>GLM：~/.codex/config.toml に足す設定</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>model_provider = "ZAI"
@@ -1140,13 +1254,14 @@ base_url = "https://api.z.ai/api/v1"
 experimental_bearer_token = "&lt;Your API Key&gt;"
 wire_api = "responses"</pre>
       </div>
+      <div class="note"><b>ポイント：</b>上の4行（<code>model_provider</code> から <code>model_catalog_json</code> まで）は、ファイルの一番上、<code>[ ]</code> で始まる行より前に置きます。Windowsでは、<code>model_catalog_json</code> を <code>C:/Users/（ユーザー名）/.codex/models.json</code> のように書くと確実です。</div>
       <a class="toollink" href="https://docs.z.ai/devpack/tool/codex" target="_blank" rel="noopener">Z.ai 公式：Codexで使う</a>
 
-      <h3>Kimi（使った分だけ払うAPI）</h3>
-      <p>config.toml に次の設定を書きます。すでに <code>model</code> や <code>model_provider</code> の行がある時は、その値を書き換えます。鍵は config.toml には書かず、環境変数 KIMI_API_KEY に入れます。</p>
-      <div class="prompt">
+      <h3>Kimi：config.toml に書く</h3>
+      <p>Kimiは、鍵を設定ファイルではなく、環境変数（パソコンに覚えさせておく設定の値）に入れる方式です。デスクトップアプリには、ターミナルで設定した値が届かないことがあるので、手順が1つ増えます。</p>
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>Kimi：~/.codex/config.toml（公式の例そのまま）</b>
+          <b>Kimi（API）：~/.codex/config.toml に足す設定</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>model = "kimi-k3"
@@ -1159,32 +1274,22 @@ base_url = "https://api.moonshot.ai/v1"
 env_key = "KIMI_API_KEY"
 wire_api = "responses"</pre>
       </div>
-      <div class="prompt">
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>Kimi：鍵を入れる（Macのターミナル・公式）</b>
+          <b>Kimi：Macで鍵をアプリに渡す（ターミナルで実行）</b>
           <button class="copy" type="button">コピー</button>
         </div>
-        <pre>echo "Paste your Kimi API key and press Enter (input is hidden):"
-read -s KIMI_API_KEY
-export KIMI_API_KEY</pre>
+        <pre>launchctl setenv KIMI_API_KEY "ここに自分のKimiの鍵"</pre>
       </div>
-      <div class="note"><b>ポイント：</b>このやり方は、そのターミナルを開いている間だけ有効です。毎回使う場合や、Windowsの場合は、公式ページの手順で保存してください。そのあと、作業するフォルダで <code>codex</code> と打って起動し、<code>kimi-k3</code> と表示されれば成功です。Kimiの月額プラン（Kimi Code）で使う場合は、接続先と鍵が別になるので、Kimi Code の公式ページの手順に従います。</div>
+      <div class="note warn"><b>Kimiの注意：</b>Macの <code>launchctl setenv</code> は、Kimi Code（月額）の公式ページがデスクトップアプリ向けに案内している方法です。パソコンを再起動すると消えるので、再起動のたびに実行し直し、アプリを完全に終了して開き直します。Windowsは、「設定」→「システム」→「バージョン情報」→「システムの詳細設定」→「環境変数」で <code>KIMI_API_KEY</code> を追加してから、アプリを開き直します。開き直した後、新しいチャットでモデルの選択欄から <code>kimi-k3</code> を選びます（「Custom」と表示されることがありますが、中身は kimi-k3 です）。月額のKimi Codeを使う場合は、接続先と鍵が別になり、鍵を設定ファイルに直接書く方法も公式に載っています。</div>
       <a class="toollink" href="https://platform.kimi.ai/docs/guide/codex-kimi" target="_blank" rel="noopener">Kimi 公式：Codexで使う</a>
-      <a class="toollink" href="https://www.kimi.com/code/docs/en/third-party-tools/codex.html" target="_blank" rel="noopener">Kimi Code 公式：Codexで使う</a>
+      <a class="toollink" href="https://www.kimi.com/code/docs/en/third-party-tools/codex.html" target="_blank" rel="noopener">Kimi Code 公式：Codex（デスクトップアプリ）で使う</a>
 
-      <h3>Qwen（Token Plan・個人向け）</h3>
-      <p>鍵は環境変数 OPENAI_API_KEY に入れます（Token Plan用の鍵を使います）。config.toml に次の設定を書き、モデルの一覧ファイル（<code>~/.codex/model-catalog.local.json</code>）を公式ページからコピーして作り、config.toml に <code>model_catalog_json = "~/.codex/model-catalog.local.json"</code> を足します。この行も <code>[ ]</code> の行より上に書きます。</p>
-      <div class="prompt">
+      <h3>Qwen：ターミナル版のCodexで使う</h3>
+      <p>Qwenの公式ページは、ターミナル版のCodexの手順だけを案内していて、デスクトップアプリでの使い方は書かれていません。Qwenをつなぐ時は、公式ページの手順どおりターミナル版のCodexで使ってください。鍵は環境変数 <code>OPENAI_API_KEY</code> に入れ、config.toml に次の設定を書きます（個人向けのToken Planの場合）。</p>
+      <div class="prompt code">
         <div class="prompt-head">
-          <b>Qwen：鍵を入れる（Macのターミナル・公式）</b>
-          <button class="copy" type="button">コピー</button>
-        </div>
-        <pre>echo 'export OPENAI_API_KEY="YOUR_API_KEY"' &gt;&gt; ~/.zshrc
-source ~/.zshrc</pre>
-      </div>
-      <div class="prompt">
-        <div class="prompt-head">
-          <b>Qwen：~/.codex/config.toml（公式の例そのまま）</b>
+          <b>Qwen（Token Plan・個人）：~/.codex/config.toml</b>
           <button class="copy" type="button">コピー</button>
         </div>
         <pre>model_provider = "Model_Studio_Token_Plan_Personal"
@@ -1195,16 +1300,16 @@ base_url = "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1"
 env_key = "OPENAI_API_KEY"
 wire_api = "responses"</pre>
       </div>
-      <div class="note warn"><b>Qwenの注意：</b><code>OPENAI_API_KEY</code> は、ほかのツールも読むことがある名前です。また、Token Planは人が対話しながら使うためのプランで、自動で動かす使い方は規約で禁止されています。</div>
+      <div class="note warn"><b>Qwenの注意：</b>モデルの一覧ファイル（<code>~/.codex/model-catalog.local.json</code>）を公式ページからコピーして作り、config.toml の上の方に <code>model_catalog_json = "~/.codex/model-catalog.local.json"</code> を足します。<code>OPENAI_API_KEY</code> は、ほかのツールも読むことがある名前です。Token Planは、人が対話しながら使うためのプランで、自動で動かす使い方は規約で禁止されています。</div>
       <a class="toollink" href="https://docs.qwencloud.com/developer-guides/clients-and-developer-tools/codex" target="_blank" rel="noopener">QwenCloud 公式：Codexで使う</a>
 
       <h3>元のCodexに戻す方法</h3>
       <ul class="check">
-        <li>config.toml の <code>model_provider</code> の行を消す（または <code>model_provider = "openai"</code> にする）。<code>model</code> と <code>model_catalog_json</code> の行も消す</li>
-        <li>DeepSeekを自動設定スクリプトで入れた場合は、もう一度スクリプトを動かしてメニューの 9 を選ぶ</li>
-        <li>Codexを起動し直す。会話の履歴は、設定ごとに分けて保存されていて、今の設定に合う方だけが表示されます（消えてはいません）</li>
+        <li>DeepSeekを自動設定スクリプトで入れた場合は、もう一度スクリプトを実行してメニューの 9 を選ぶ</li>
+        <li>手で書いた場合は、書き換える前に保存しておいた中身に戻す。または、足した行（<code>model_provider</code>・<code>model</code>・<code>model_catalog_json</code> と <code>[model_providers.…]</code> のまとまり）を消す</li>
+        <li>アプリを完全に終了して開き直し、新しいチャットで確かめる。会話の履歴は、設定ごとに分けて保存されていて、今の設定に合う方だけが表示されます（消えてはいません）</li>
       </ul>
-      <a class="toollink" href="https://learn.chatgpt.com/docs/config-file/config-advanced" target="_blank" rel="noopener">Codex 公式：設定の詳しい説明</a>
+      <a class="toollink" href="https://learn.chatgpt.com/docs/config-file/config-advanced" target="_blank" rel="noopener">OpenAI 公式：設定の詳しい説明</a>
 
       <ol class="takeaway">
         <li><b>まずは無料で触れるところから1つ</b><span>Grok・DeepSeekのWeb版・chat.z.ai・Qwen Studioのどれかで、本編のプロンプトを1つ試してみてください。</span></li>
